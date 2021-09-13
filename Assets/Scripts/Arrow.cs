@@ -13,7 +13,7 @@ public class Arrow : MonoBehaviour
     public Sprite defaultBg;
 
     public int damage;
-    public GameManager.Direction direction;
+    public Direction direction;
 
     private bool isPressed;
     public bool IsPressed
@@ -26,40 +26,29 @@ public class Arrow : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void SetBackground(bool isComplete)
     {
-        if (isComplete)
-        {
-            background.sprite = pressedBg;
-        }
-        else
-        {
-            background.sprite = defaultBg;
-        }
+        background.sprite = isComplete
+            ? pressedBg
+            : defaultBg;
     }
 
-    public void Init(GameManager.Direction direction)
+    public void Init(Direction direction)
     {
         background.sprite = defaultBg;
 
         switch (direction)
         {
-            case GameManager.Direction.Down:
+            case Direction.Down:
                 arrow.transform.Rotate(0, 0, 90);
                 break;
-            case GameManager.Direction.Up:
+            case Direction.Up:
                 arrow.transform.Rotate(0, 0, -90);
                 break;
-            case GameManager.Direction.Left:
+            case Direction.Left:
                 arrow.transform.Rotate(0, 0, 0);
                 break;
-            case GameManager.Direction.Right:
+            case Direction.Right:
                 arrow.transform.Rotate(0, 0, 180);
                 break;
         }

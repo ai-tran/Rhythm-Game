@@ -3,29 +3,23 @@ using RhythmTool;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatSlider : MonoBehaviour
+public class Conductor : MonoBehaviour
 {
-    //public float speed = 0.5f;
-
-    //temp so I can visualize beats
-    public Transform pic;
-
     public RhythmAnalyzer analyzer;
     public AudioSource audioSource;
     public RhythmData rhythmData;
+    public SpriteRenderer character;
+    public BeatCounter beatCounter;
 
     private float prevTime = 0;
-    public List<Beat> beats;
-
-    //temp change this to get children from parent
-    public List<RectTransform> beatCounter;
+    public List<Beat> beats = new List<Beat>();
+    
+    private BeatCount[] beatCounters;
     private int beatCounterIndex = 0;
 
     void Awake()
     {
-
-        //get list of all beat markups in track
-        beats = new List<Beat>();
+        beatCounters = beatCounter.beatCounters;
 
         //Find a track with Beats.
         Track<Beat> track = rhythmData.GetTrack<Beat>();
@@ -34,31 +28,32 @@ public class BeatSlider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float time = audioSource.time;
-
-        if(beatCounterIndex >= beatCounter.Count)
+        if(beatCounterIndex >= beatCounters.Length)
         {
             beatCounterIndex = 0;
         }
 
         //Clear the list.
         beats.Clear();
+        float time = audioSource.time;
+
         //Find all beats for the part of the song that is currently playing.
-        rhythmData.GetFeatures<Beat>(beats, prevTime, time);
+        rhythmData.GetFeatures(beats, prevTime, time);
+
         //Do something with the Beats here.
         foreach (Beat beat in beats)
         {
-            beatCounter[beatCounterIndex].GetComponent<RectTransform>().DOScale(1.3f, 0.2f);
-            
+            beatCounters[beatCounterIndex].OnBeat();
+
             if (beatCounterIndex != 0)
             {
                 int previousIndex = beatCounterIndex - 1;
-                beatCounter[previousIndex].GetComponent<RectTransform>().DOScale(1, 0.2f);
+                beatCounters[previousIndex].OffBeat();
             }
             else
             {
-                int lastIndex = beatCounter.Count -1;
-                beatCounter[lastIndex].GetComponent<RectTransform>().DOScale(1, 0.2f);
+                int lastIndex = beatCounters.Length -1;
+                beatCounters[lastIndex].OffBeat();
             }
 
             beatCounterIndex++;
@@ -77,11 +72,5 @@ public class BeatSlider : MonoBehaviour
                 print("Miss");
             }
         }
-    }
-
-    public void OnBeat()
-    {
-        print("On beat");
-        pic.transform.DOPunchScale(Vector3.up, 0.2f, 10, 1);
     }
 }

@@ -18,15 +18,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Not sure if this belongs here
-    public enum Direction
-    {
-        Left,
-        Right,
-        Up,
-        Down
-    }
-
     // Start is called before the first frame update
     void Awake()
     {

@@ -10,9 +10,9 @@ public class ArrowSequence : MonoBehaviour
     //temp move this in the future, what arrow prefabs to spawn in set
     public GameObject arrowPrefab;
     //list of directions to spawn arrows, this is set in the MoveSetClass
-    public List<Direction> arrowSet = new();
+    public List<Direction> arrowSet = new List<Direction>();
     //list of arrow in this sequence
-    public List<Arrow> arrows = new();
+    public List<Arrow> arrows = new List<Arrow>();
 
     public void Init(List<Direction> directions)
     {

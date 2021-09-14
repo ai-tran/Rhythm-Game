@@ -9,7 +9,7 @@ public class MoveSet : MonoBehaviour
     //Will have to expand this to save more info on player input
     public List<Direction> playerInput;
 
-    List<Direction> temp = new();
+    List<Direction> temp = new List<Direction>();
 
     // Start is called before the first frame update
     void Start()

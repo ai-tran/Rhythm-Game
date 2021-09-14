@@ -49,7 +49,7 @@ public class Arrow : MonoBehaviour
                 arrow.transform.Rotate(0, 0, 0);
                 break;
             case Direction.Right:
-                arrow.transform.Rotate(0, 0, 180);
+                arrow.transform.Rotate(0, 0, 180);  
                 break;
         }
     }

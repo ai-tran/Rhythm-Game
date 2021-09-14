@@ -7,6 +7,13 @@ public enum Direction
     Down
 }
 
+public enum HitAccuracyType
+{
+    Perfect,
+    Great,
+    Miss
+}
+
 public class Constants
 {
 

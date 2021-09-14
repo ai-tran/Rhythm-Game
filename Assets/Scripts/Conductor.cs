@@ -11,6 +11,9 @@ public class Conductor : MonoBehaviour
     public SpriteRenderer character;
     public BeatCounter beatCounter;
 
+    public Transform HitAccuracyIndicator;
+    public Transform HitAccuracySpawn;
+
     private float prevTime = 0;
     public List<Beat> beats = new List<Beat>();
     
@@ -63,9 +66,10 @@ public class Conductor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space)){
             //temp move this from being hardcoded
-            if(beatCounterIndex == 9)
+            if(beatCounterIndex == 8)
             {
                 print("Hit");
+                Instantiate(HitAccuracyIndicator);
             }
             else
             {

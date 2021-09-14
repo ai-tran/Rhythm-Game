@@ -36,7 +36,7 @@ public class HitAccuracyIndicator : MonoBehaviour
         transform.DOPunchScale(new Vector3(scaleSize, scaleSize, scaleSize), duration, vibrato, elasticty);
     }
 
-    private void Destroy()
+    public void Destroy()
     {
         Destroy(gameObject);
     }

@@ -401,7 +401,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.7
-    functionName: Destroy
+    functionName: OnAnimationComplete
     data: 
     objectReferenceParameter: {fileID: 2682194218109391187, guid: d9d18e13091625442a317c30bda572de, type: 3}
     floatParameter: 0

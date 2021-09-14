@@ -11,7 +11,11 @@ public class HitAccuracyIndicator : MonoBehaviour
     public Sprite perfectSprite;
     public Sprite missSprite;
 
-    public float punchScaleSize = 0.3f;
+    [Header("Punch Scale Settings")]
+    public float scaleSize = 0.3f;
+    public float duration = 0.2f;
+    public int vibrato = 5;
+    public float elasticty = 1f;
 
     private void Start()
     {
@@ -29,7 +33,7 @@ public class HitAccuracyIndicator : MonoBehaviour
             indicatorSprite.sprite = perfectSprite;
         }
 
-        transform.DOPunchScale(new Vector3(0.2f,0.2f,0.2f), 0.2f, 5, 1);
+        transform.DOPunchScale(new Vector3(scaleSize, scaleSize, scaleSize), duration, vibrato, elasticty);
     }
 
     private void Destroy()

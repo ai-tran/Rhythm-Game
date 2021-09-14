@@ -47,6 +47,10 @@ MonoBehaviour:
   indicatorSprite: {fileID: 2682194218214616035}
   perfectSprite: {fileID: 21300000, guid: 40aef7d3f66ec9c46a818bdccc9b8bbe, type: 3}
   missSprite: {fileID: 21300000, guid: 40aef7d3f66ec9c46a818bdccc9b8bbe, type: 3}
+  scaleSize: 0.4
+  duration: 0.2
+  vibrato: 5
+  elasticty: 1
 --- !u!1 &2682194218214616034
 GameObject:
   m_ObjectHideFlags: 0

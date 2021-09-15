@@ -7,7 +7,7 @@ public enum Direction
     Down
 }
 
-public enum HitAccuracyType
+public enum HitAccuracy
 {
     Perfect,
     Great,

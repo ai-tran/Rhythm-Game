@@ -20,18 +20,29 @@ public class Conductor : MonoBehaviour
     private BeatCount[] beatCounters;
     private int beatCounterIndex = 0;
 
+    private HitAccuracy beatHitAccuracy;
+
+    void OnEnable()
+    {
+        EventManager.OnBeatHit += OnBeatHit;
+        EventManager.OnArrowKeyPress += OnArrowKeyPress;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnBeatHit -= OnBeatHit;
+        EventManager.OnArrowKeyPress -= OnArrowKeyPress;
+    }
+
     void Awake()
     {
         beatCounters = beatCounter.beatCounters;
-
-        //Find a track with Beats.
-        Track<Beat> track = rhythmData.GetTrack<Beat>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(beatCounterIndex >= beatCounters.Length)
+        if (beatCounterIndex >= beatCounters.Length)
         {
             beatCounterIndex = 0;
         }
@@ -55,7 +66,7 @@ public class Conductor : MonoBehaviour
             }
             else
             {
-                int lastIndex = beatCounters.Length -1;
+                int lastIndex = beatCounters.Length - 1;
                 beatCounters[lastIndex].OffBeat();
             }
 
@@ -64,17 +75,31 @@ public class Conductor : MonoBehaviour
         //Keep track of the previous playback time of the AudioSource.
         prevTime = time;
 
-        if (Input.GetKeyDown(KeyCode.Space)){
-            //temp move this from being hardcoded
-            if(beatCounterIndex == 8)
-            {
-                print("Hit");
-                Instantiate(HitAccuracyIndicator);
-            }
-            else
-            {
-                print("Miss");
-            }
+        if (beatCounterIndex == 8)
+        {
+            beatHitAccuracy = HitAccuracy.Perfect;
         }
+        else
+        {
+            beatHitAccuracy = HitAccuracy.Miss;
+        }
+
+    }
+
+    private void OnBeatHit()
+    {
+        if(beatHitAccuracy == HitAccuracy.Perfect)
+        {
+            Instantiate(HitAccuracyIndicator);
+        }
+        if (beatHitAccuracy == HitAccuracy.Miss)
+        {
+            print("Miss");
+        }
+    }
+
+    private void OnArrowKeyPress(Direction direction)
+    {
+
     }
 }

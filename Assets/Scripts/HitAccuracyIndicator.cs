@@ -19,16 +19,16 @@ public class HitAccuracyIndicator : MonoBehaviour
 
     private void Start()
     {
-        Init(HitAccuracyType.Perfect);
+        Init(HitAccuracy.Perfect);
     }
 
-    private void Init(HitAccuracyType accuracyType)
+    private void Init(HitAccuracy accuracyType)
     {
-        if (accuracyType == HitAccuracyType.Perfect)
+        if (accuracyType == HitAccuracy.Perfect)
         {
             indicatorSprite.sprite = perfectSprite;
         }
-        if (accuracyType == HitAccuracyType.Perfect)
+        if (accuracyType == HitAccuracy.Perfect)
         {
             indicatorSprite.sprite = perfectSprite;
         }

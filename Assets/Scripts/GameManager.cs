@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Todo load this skin from settings
+    public Skin selectedSkin;
+
     // Start is called before the first frame update
     void Awake()
     {

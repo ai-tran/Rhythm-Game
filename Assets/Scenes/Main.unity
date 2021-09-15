@@ -1078,6 +1078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a0d5f9db3c36546bd4dd7e57da2f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedSkin: {fileID: 11400000, guid: ca276e3bcb0904d4a8aac53339fd09e6, type: 2}
 --- !u!4 &869383503
 Transform:
   m_ObjectHideFlags: 0
@@ -2125,7 +2126,7 @@ GameObject:
   - component: {fileID: 1523343061}
   - component: {fileID: 1523343063}
   m_Layer: 5
-  m_Name: ArrowSequenceContainer
+  m_Name: Move Set
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2345,7 +2346,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6267486627710510124, guid: 9fdc66a0c177a614e8f944e51217261e, type: 3}
       propertyPath: m_Name
-      value: ArrowContainer
+      value: Arrow
       objectReference: {fileID: 0}
     - target: {fileID: 6267486627710510163, guid: 9fdc66a0c177a614e8f944e51217261e, type: 3}
       propertyPath: m_Pivot.x

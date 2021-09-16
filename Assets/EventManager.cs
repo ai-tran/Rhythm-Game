@@ -18,6 +18,7 @@ public class EventManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             OnBeatHit();
+            
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {

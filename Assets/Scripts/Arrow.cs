@@ -8,10 +8,6 @@ public class Arrow : MonoBehaviour
     public Image arrow;
     public Image background;
 
-    //abstract this out when for skins
-    public Sprite pressedBg;
-    public Sprite defaultBg;
-
     public int damage;
     public Direction direction;
 
@@ -26,16 +22,22 @@ public class Arrow : MonoBehaviour
         }
     }
 
+    private Skin currentSkin;
+    private void Start()
+    {
+        currentSkin = GameManager.Instance.selectedSkin;
+    }
+
     private void SetBackground(bool isComplete)
     {
         background.sprite = isComplete
-            ? pressedBg
-            : defaultBg;
+            ? currentSkin.arrowPressedBg
+            : currentSkin.arrowDefaultBg;
     }
 
     public void Init(Direction direction)
     {
-        background.sprite = defaultBg;
+        background.sprite = currentSkin.arrowDefaultBg;
 
         switch (direction)
         {

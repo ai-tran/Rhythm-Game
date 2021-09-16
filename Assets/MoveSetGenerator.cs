@@ -11,15 +11,31 @@ public class MoveSetGenerator : MonoBehaviour
     [Header("Move Set Assets")]
     public GameObject arrowPrefab;
 
+    private void OnEnable()
+    {
+        EventManager.OnArrowKeyPress += ProcessArrowSequence;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnArrowKeyPress -= ProcessArrowSequence;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void ProcessArrowSequence(Direction direction)
     {
-        
+        for(int i = 0; i < arrowSequences.Count; i++)
+        {
+            if(direction == arrowSequences[i].arrowSet[0])
+            {
+                arrowSequences[i].isActiveSet = true;
+                return;
+            }
+        }
     }
 }

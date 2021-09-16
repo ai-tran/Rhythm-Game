@@ -8,6 +8,6 @@ public class Skin : ScriptableObject
     public Sprite perfectText;
     public Sprite missText;
     public Sprite arrow;
-    public Sprite pressedBg;
-    public Sprite defaultBg;
+    public Sprite arrowPressedBg;
+    public Sprite arrowDefaultBg;
 }

@@ -16,7 +16,7 @@ public class ArrowSequence : MonoBehaviour
     //list of arrow in this sequence
     private List<Arrow> arrows = new List<Arrow>();
 
-    private bool isActiveSet = true;
+    public bool isActiveSet = true;
     private int sequenceIndex = 0;
 
     public void OnEnable()
@@ -42,13 +42,24 @@ public class ArrowSequence : MonoBehaviour
 
     void ProcessArrowKey(Direction direction)
     {
+        if (isActiveSet)
+        {
+            if(direction == arrowSet[sequenceIndex])
+            {
+                arrows[sequenceIndex].IsPressed = true;
+                sequenceIndex++;
+                return;
+            }
 
+            ResetSequence();
+        }
     }
 
     //Reset all arrows to not pressed
     public void ResetSequence()
     {
         arrows.ForEach(arrow => arrow.IsPressed = false);
+        isActiveSet = false;
     }
 
     public bool IsSequenceComplete()

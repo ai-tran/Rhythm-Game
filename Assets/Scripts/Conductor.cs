@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class Conductor : MonoBehaviour
 {
+    [Header("Rhythm Tool Plugin")]
     public RhythmAnalyzer analyzer;
-    public AudioSource audioSource;
     public RhythmData rhythmData;
+
+
+    public AudioSource audioSource;
+
     public SpriteRenderer character;
     public BeatCounter beatCounter;
 
-    public Transform HitAccuracyIndicator;
+    public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
 
     private float prevTime = 0;
@@ -86,19 +90,18 @@ public class Conductor : MonoBehaviour
 
     }
 
-    private void OnBeatHit()
+    void OnBeatHit()
     {
-        if(beatHitAccuracy == HitAccuracy.Perfect)
-        {
-            Instantiate(HitAccuracyIndicator);
-        }
-        if (beatHitAccuracy == HitAccuracy.Miss)
-        {
-            print("Miss");
-        }
+        HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
+        temp.Init(beatHitAccuracy);
     }
 
-    private void OnArrowKeyPress(Direction direction)
+    void SetHitIndicator()
+    {
+        
+    }
+
+    void OnArrowKeyPress(Direction direction)
     {
 
     }

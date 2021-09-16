@@ -24,39 +24,9 @@ public class MoveSet : MonoBehaviour
         arrowContainer.Init(temp);
     }
 
-    private void HandleInput()
-    {
-        //If arrow set is complete no longer need to store player input, might be temp eventually we want to record all player input
-        if (arrowContainer.IsSetComplete())
-        {
-            playerInput.Clear();
-            return;
-        }
-
-        //this is bad need to redo probably
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            playerInput.Add(Direction.Up);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            playerInput.Add(Direction.Left);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            playerInput.Add(Direction.Right);
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            playerInput.Add(Direction.Down);
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
-        HandleInput();
-
         //check if our player input matches with the current set
         //if we reset it so the player can start over
         for(int i = 0; i < playerInput.Count; i++)

@@ -17,22 +17,16 @@ public class HitAccuracyIndicator : MonoBehaviour
     public int vibrato = 5;
     public float elasticty = 1f;
 
-    private void Start()
-    {
-        Init(HitAccuracy.Perfect);
-    }
-
-    private void Init(HitAccuracy accuracyType)
+    public void Init(HitAccuracy accuracyType)
     {
         if (accuracyType == HitAccuracy.Perfect)
         {
-            indicatorSprite.sprite = perfectSprite;
+            indicatorSprite.sprite = GameManager.Instance.selectedSkin.perfectText;
         }
-        if (accuracyType == HitAccuracy.Perfect)
+        if (accuracyType == HitAccuracy.Miss)
         {
-            indicatorSprite.sprite = perfectSprite;
+            indicatorSprite.sprite = GameManager.Instance.selectedSkin.missText;
         }
-
         transform.DOPunchScale(new Vector3(scaleSize, scaleSize, scaleSize), duration, vibrato, elasticty);
     }
 

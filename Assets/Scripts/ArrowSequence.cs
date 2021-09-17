@@ -8,16 +8,14 @@ using UnityEngine;
 public class ArrowSequence : MonoBehaviour
 {
     public delegate bool SetCompleteAction();
-    public static event SetCompleteAction InSetComplete;
-
-    //list of directions to spawn arrows, this is set in the MoveSetClass
-    public List<Direction> arrowSet = new List<Direction>();
+    public static event SetCompleteAction OnSetComplete;
 
     //list of arrow in this sequence
-    private List<Arrow> arrows = new List<Arrow>();
+    public List<Arrow> arrows = new List<Arrow>();
 
     public bool isActiveSet = true;
-    private int sequenceIndex = 0;
+    //How far are we in move set
+    public int sequenceIndex = 0;
 
     public void OnEnable()
     {
@@ -40,22 +38,33 @@ public class ArrowSequence : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Check if player arrow key direction matches with set
+    /// </summary>
+    /// <param name="direction"></param>
     void ProcessArrowKey(Direction direction)
     {
-        Debug.Log("dir = " + direction.ToString());
-        if (arrows[sequenceIndex].direction == direction)
+        if (isActiveSet)
         {
-            arrows[sequenceIndex].IsPressed = true;
-            sequenceIndex++;
+            if (arrows[sequenceIndex].direction == direction)
+            {
+                arrows[sequenceIndex].IsPressed = true;
+                sequenceIndex++;
+                return;
+            }
+            ResetSequence();
         }
     }
 
 
-    //Reset all arrows to not pressed
+    /// <summary>
+    /// Clears state of move set used when user incorrectly presses wrong input
+    /// </summary>
     public void ResetSequence()
     {
         arrows.ForEach(arrow => arrow.IsPressed = false);
         isActiveSet = false;
+        sequenceIndex = 0;
     }
 
     public bool IsSequenceComplete()

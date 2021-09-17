@@ -46,9 +46,15 @@ public class MoveSetGenerator : MonoBehaviour
         {
             var seq = Instantiate(arrowSequencePrefab, moveSetParent).GetComponent<ArrowSequence>();
             seq.Init(arrowPrefab, RandomDirectionsList(arrowCount));
+            arrowSequences.Add(seq);
         }
     }
 
+    /// <summary>
+    /// Get random list of directions
+    /// </summary>
+    /// <param name="listSize">how many items in list</param>
+    /// <returns></returns>
     List<Direction>RandomDirectionsList(int listSize)
     {
         List<Direction> dir = new List<Direction>(listSize);
@@ -62,9 +68,9 @@ public class MoveSetGenerator : MonoBehaviour
 
     void ProcessArrowSequence(Direction direction)
     {
-        for(int i = 0; i < arrowSequences.Count; i++)
+        for (int i = 0; i < arrowSequences.Count; i++)
         {
-            if(direction == arrowSequences[i].arrowSet[0])
+            if (direction == arrowSequences[i].arrows[0].direction)
             {
                 arrowSequences[i].isActiveSet = true;
                 return;

@@ -9,6 +9,7 @@ public class Arrow : MonoBehaviour
     public Image background;
 
     public int damage;
+
     public Direction direction;
 
     private bool isPressed;
@@ -23,7 +24,7 @@ public class Arrow : MonoBehaviour
     }
 
     private Skin currentSkin;
-    private void Start()
+    private void Awake()
     {
         currentSkin = GameManager.Instance.selectedSkin;
     }
@@ -38,7 +39,7 @@ public class Arrow : MonoBehaviour
     public void Init(Direction direction)
     {
         background.sprite = currentSkin.arrowDefaultBg;
-
+        this.direction = direction;
         switch (direction)
         {
             case Direction.Down:

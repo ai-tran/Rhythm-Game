@@ -42,18 +42,14 @@ public class ArrowSequence : MonoBehaviour
 
     void ProcessArrowKey(Direction direction)
     {
-        if (isActiveSet)
+        Debug.Log("dir = " + direction.ToString());
+        if (arrows[sequenceIndex].direction == direction)
         {
-            if(direction == arrowSet[sequenceIndex])
-            {
-                arrows[sequenceIndex].IsPressed = true;
-                sequenceIndex++;
-                return;
-            }
-
-            ResetSequence();
+            arrows[sequenceIndex].IsPressed = true;
+            sequenceIndex++;
         }
     }
+
 
     //Reset all arrows to not pressed
     public void ResetSequence()

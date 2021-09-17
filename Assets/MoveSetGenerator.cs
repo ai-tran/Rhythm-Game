@@ -10,6 +10,15 @@ public class MoveSetGenerator : MonoBehaviour
 
     [Header("Move Set Assets")]
     public GameObject arrowPrefab;
+    public GameObject arrowSequencePrefab;
+    public Transform moveSetParent;
+
+    //How many sequences to spawn
+    public int sequenceCount;
+    //arrow many arrows to increment by per sequence
+    public int arrowIncrement;
+    //How many arrows per set
+    public int arrowCount;
 
     private void OnEnable()
     {
@@ -21,10 +30,34 @@ public class MoveSetGenerator : MonoBehaviour
         EventManager.OnArrowKeyPress -= ProcessArrowSequence;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        InitMoveSet();
+    }
+
+    void InitMoveSet()
+    {
+        SpawnSequence();
+    }
+
+    void SpawnSequence()
+    {
+        for (int i = 0; i < sequenceCount; i++)
+        {
+            var seq = Instantiate(arrowSequencePrefab, moveSetParent).GetComponent<ArrowSequence>();
+            seq.Init(arrowPrefab, RandomDirectionsList(arrowCount));
+        }
+    }
+
+    List<Direction>RandomDirectionsList(int listSize)
+    {
+        List<Direction> dir = new List<Direction>(listSize);
+        for(int i = 0; i < listSize; i++)
+        {
+            Direction randDir = (Direction)Random.Range(0, 3);
+            dir.Add(randDir);
+        }
+        return dir;
     }
 
     void ProcessArrowSequence(Direction direction)

@@ -25,7 +25,7 @@ public class EventManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            OnArrowKeyPress(Direction.Left);
+            OnArrowKeyPress(Direction.Right);
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {

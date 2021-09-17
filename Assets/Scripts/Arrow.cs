@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Arrow : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class Arrow : MonoBehaviour
         background.sprite = isComplete
             ? currentSkin.arrowPressedBg
             : currentSkin.arrowDefaultBg;
+
+        if (isComplete)
+        {
+            transform.DOPunchScale(transform.localScale * 0.4f, 0.2f, 6, 1);
+        }
     }
 
     public void Init(Direction direction)

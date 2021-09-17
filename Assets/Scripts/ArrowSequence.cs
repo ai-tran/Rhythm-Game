@@ -7,8 +7,9 @@ using UnityEngine;
 /// </summary>
 public class ArrowSequence : MonoBehaviour
 {
+    //Todo: Move this to moveset generator, event manager, or conductor
     public delegate bool SetCompleteAction();
-    public static event SetCompleteAction OnSetComplete;
+    public static event SetCompleteAction OnSequenceComplete;
 
     //list of arrow in this sequence
     public List<Arrow> arrows = new List<Arrow>();

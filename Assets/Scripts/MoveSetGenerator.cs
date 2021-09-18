@@ -70,11 +70,17 @@ public class MoveSetGenerator : MonoBehaviour
     {
         for (int i = 0; i < arrowSequences.Count; i++)
         {
+            if (arrowSequences[i].isActiveSet == true)
+            {
+                return;
+            }
+
             if (direction == arrowSequences[i].arrows[0].direction)
             {
                 arrowSequences[i].isActiveSet = true;
-                return;
+                break;
             }
+            return;
         }
     }
 }

@@ -13,39 +13,53 @@ public class Conductor : MonoBehaviour
     public AudioSource audioSource;
 
     public SpriteRenderer character;
-    public BeatCounter beatCounter;
+
 
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
 
     private float prevTime = 0;
-    public List<Beat> beats = new List<Beat>();
-    
+    private List<Beat> beats = new List<Beat>();
+
+    //Beat counter stuff
+    public int beatCounterCount = 5;
+    public GameObject beatCountPrefab;
+    public float horizontalOffset = 0.3f;
+    public BeatCounter beatCounter;
     private BeatCount[] beatCounters;
     private int beatCounterIndex = 0;
+    public int beatHitMarker = 0;
 
     private HitAccuracy beatHitAccuracy;
     private bool isBeatHit = false;
 
-    void OnEnable()
+    private void OnEnable()
     {
         EventManager.OnBeatHit += OnBeatHit;
-        EventManager.OnArrowKeyPress += OnArrowKeyPress;
     }
 
     private void OnDisable()
     {
         EventManager.OnBeatHit -= OnBeatHit;
-        EventManager.OnArrowKeyPress -= OnArrowKeyPress;
     }
 
-    void Awake()
+    private void Start()
     {
+        beatCounter = GameObject.FindObjectOfType<BeatCounter>();
         beatCounters = beatCounter.beatCounters;
+        SpawnBeatCounter(beatCounterCount, horizontalOffset);
+    }
+
+    private void SpawnBeatCounter(int count, float offset)
+    {
+        for(int i = 0; i < count; i++)
+        {
+            //BeatCount temp = Instantiate()
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (beatCounterIndex >= beatCounters.Length)
         {
@@ -92,7 +106,7 @@ public class Conductor : MonoBehaviour
 
     }
 
-    void OnBeatHit()
+    private void OnBeatHit()
     {
         if (!isBeatHit)
         {
@@ -100,15 +114,5 @@ public class Conductor : MonoBehaviour
             temp.Init(beatHitAccuracy);
             isBeatHit = true;
         }
-    }
-
-    void SetHitIndicator()
-    {
-        
-    }
-
-    void OnArrowKeyPress(Direction direction)
-    {
-
     }
 }

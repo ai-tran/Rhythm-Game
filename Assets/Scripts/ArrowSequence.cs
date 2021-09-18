@@ -7,17 +7,13 @@ using UnityEngine;
 /// </summary>
 public class ArrowSequence : MonoBehaviour
 {
-    //Todo: Move this to moveset generator, event manager, or conductor
-    public delegate bool SetCompleteAction();
-    public static event SetCompleteAction OnSequenceComplete;
-
     //list of arrow in this sequence
     public List<Arrow> arrows = new List<Arrow>();
 
     public bool isActiveSet = true;
     //How far are we in move set
     public int sequenceIndex = 0;
-
+    
     public void OnEnable()
     {
         EventManager.OnArrowKeyPress += ProcessArrowKey;
@@ -43,20 +39,23 @@ public class ArrowSequence : MonoBehaviour
     /// Check if player arrow key direction matches with set
     /// </summary>
     /// <param name="direction"></param>
-    void ProcessArrowKey(Direction direction)
+    private void ProcessArrowKey(Direction direction)
     {
         if (isActiveSet)
         {
             if (arrows[sequenceIndex].direction == direction)
             {
                 arrows[sequenceIndex].IsPressed = true;
+                if (IsSequenceComplete())
+                {
+                    return;
+                }
                 sequenceIndex++;
                 return;
             }
             ResetSequence();
         }
     }
-
 
     /// <summary>
     /// Clears state of move set used when user incorrectly presses wrong input

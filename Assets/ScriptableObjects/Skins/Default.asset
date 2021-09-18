@@ -15,5 +15,5 @@ MonoBehaviour:
   perfectText: {fileID: 21300000, guid: 40aef7d3f66ec9c46a818bdccc9b8bbe, type: 3}
   missText: {fileID: 21300000, guid: be2ead6f3d0444048abc988583226456, type: 3}
   arrow: {fileID: 21300000, guid: bf1cb1266a22e554486463c6a319cbad, type: 3}
-  pressedBg: {fileID: 21300000, guid: 44cac9d78d53b8942b9899bc2d8fbf05, type: 3}
-  defaultBg: {fileID: 21300000, guid: 0946ea6a8a022de44a7a2404a05b9baf, type: 3}
+  arrowPressedBg: {fileID: 21300000, guid: 44cac9d78d53b8942b9899bc2d8fbf05, type: 3}
+  arrowDefaultBg: {fileID: 21300000, guid: 0946ea6a8a022de44a7a2404a05b9baf, type: 3}

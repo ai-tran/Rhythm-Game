@@ -10,7 +10,18 @@ public class ArrowSequence : MonoBehaviour
     //list of arrow in this sequence
     public List<Arrow> arrows = new List<Arrow>();
 
-    public bool isActiveSet = true;
+    public bool IsActiveSet { 
+        get
+        {
+            return isActiveSet;
+        }
+        set
+        {
+            isActiveSet = value;
+        }
+    }
+    private bool isActiveSet = false;
+
     //How far are we in move set
     public int sequenceIndex = 0;
     

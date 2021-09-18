@@ -25,6 +25,7 @@ public class Conductor : MonoBehaviour
     private int beatCounterIndex = 0;
 
     private HitAccuracy beatHitAccuracy;
+    private bool isBeatHit = false;
 
     void OnEnable()
     {
@@ -61,6 +62,7 @@ public class Conductor : MonoBehaviour
         //Do something with the Beats here.
         foreach (Beat beat in beats)
         {
+            isBeatHit = false;
             beatCounters[beatCounterIndex].OnBeat();
 
             if (beatCounterIndex != 0)
@@ -92,8 +94,12 @@ public class Conductor : MonoBehaviour
 
     void OnBeatHit()
     {
-        HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
-        temp.Init(beatHitAccuracy);
+        if (!isBeatHit)
+        {
+            HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
+            temp.Init(beatHitAccuracy);
+            isBeatHit = true;
+        }
     }
 
     void SetHitIndicator()

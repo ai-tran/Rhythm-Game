@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class MoveSetGenerator : MonoBehaviour
 {
-    public int MoveSetCount;
+    public int moveSetCount;
+
     //amount of moves, amount of arrow per move, list of directions
-    List<ArrowSequence> arrowSequences = new List<ArrowSequence>();
+    readonly List<ArrowSequence> arrowSequences = new List<ArrowSequence>();
 
     [Header("Move Set Assets")]
     public GameObject arrowPrefab;
@@ -19,6 +20,8 @@ public class MoveSetGenerator : MonoBehaviour
     public int arrowIncrement;
     //How many arrows per set
     public int arrowCount;
+
+    private int sequenceIndex = 0;
 
     private void OnEnable()
     {
@@ -55,11 +58,12 @@ public class MoveSetGenerator : MonoBehaviour
     /// </summary>
     /// <param name="listSize">how many items in list</param>
     /// <returns></returns>
-    List<Direction>RandomDirectionsList(int listSize)
+    List<Direction> RandomDirectionsList(int listSize)
     {
         List<Direction> dir = new List<Direction>(listSize);
-        for(int i = 0; i < listSize; i++)
+        for (int i = 0; i < listSize; i++)
         {
+            // make 3 a variable
             Direction randDir = (Direction)Random.Range(0, 3);
             dir.Add(randDir);
         }
@@ -70,16 +74,8 @@ public class MoveSetGenerator : MonoBehaviour
     {
         for (int i = 0; i < arrowSequences.Count; i++)
         {
-            if (arrowSequences[i].IsActiveSet == true)
-            {
-                return;
-            }
-
-            if (direction == arrowSequences[i].arrows[0].direction)
-            {
-                arrowSequences[i].IsActiveSet = true;
-                return;
-            }
+            arrowSequences[i].sequenceIndex = sequenceIndex;
         }
+        sequenceIndex++;
     }
 }

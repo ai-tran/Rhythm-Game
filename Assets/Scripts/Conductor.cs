@@ -19,7 +19,7 @@ public class Conductor : MonoBehaviour
     public Transform HitAccuracySpawn;
 
     private float prevTime = 0;
-    private List<Beat> beats = new List<Beat>();
+    private readonly List<Beat> beats = new List<Beat>();
 
     //Beat counter stuff
     public int beatCounterCount = 5;
@@ -45,7 +45,7 @@ public class Conductor : MonoBehaviour
 
     private void Start()
     {
-        beatCounter = GameObject.FindObjectOfType<BeatCounter>();
+        beatCounter = FindObjectOfType<BeatCounter>();
         beatCounters = beatCounter.beatCounters;
         SpawnBeatCounter(beatCounterCount, horizontalOffset);
     }
@@ -95,6 +95,7 @@ public class Conductor : MonoBehaviour
         //Keep track of the previous playback time of the AudioSource.
         prevTime = time;
 
+        // make 8 a variable
         if (beatCounterIndex == 8)
         {
             beatHitAccuracy = HitAccuracy.Perfect;

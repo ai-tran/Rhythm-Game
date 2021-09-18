@@ -10,17 +10,7 @@ public class ArrowSequence : MonoBehaviour
     //list of arrow in this sequence
     public List<Arrow> arrows = new List<Arrow>();
 
-    public bool IsActiveSet { 
-        get
-        {
-            return isActiveSet;
-        }
-        set
-        {
-            isActiveSet = value;
-        }
-    }
-    private bool isActiveSet = false;
+    public bool IsActiveSet { get; set; } = true;
 
     //How far are we in move set
     public int sequenceIndex = 0;
@@ -40,9 +30,9 @@ public class ArrowSequence : MonoBehaviour
         //Instantiate and sets up arrow directions
         foreach (Direction direction in directions)
         {
-            var temp = Instantiate(arrowPrefab, transform);
-            temp.GetComponent<Arrow>().Init(direction);
-            arrows.Add(temp.GetComponent<Arrow>());
+            var arrow = Instantiate(arrowPrefab, transform).GetComponent<Arrow>();
+            arrow.Init(direction);
+            arrows.Add(arrow);
         }
     }
 
@@ -52,18 +42,14 @@ public class ArrowSequence : MonoBehaviour
     /// <param name="direction"></param>
     private void ProcessArrowKey(Direction direction)
     {
-        if (isActiveSet)
+        if (IsActiveSet && !IsSequenceComplete())
         {
             if (arrows[sequenceIndex].direction == direction)
             {
                 arrows[sequenceIndex].IsPressed = true;
-                if (IsSequenceComplete())
-                {
-                    return;
-                }
-                sequenceIndex++;
                 return;
             }
+            IsActiveSet = false;
             ResetSequence();
         }
     }
@@ -74,7 +60,7 @@ public class ArrowSequence : MonoBehaviour
     public void ResetSequence()
     {
         arrows.ForEach(arrow => arrow.IsPressed = false);
-        isActiveSet = false;
+        IsActiveSet = false;
         sequenceIndex = 0;
     }
 

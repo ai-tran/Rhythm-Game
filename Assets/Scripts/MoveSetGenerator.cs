@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MoveSetGenerator : MonoBehaviour
 {
@@ -14,14 +15,7 @@ public class MoveSetGenerator : MonoBehaviour
     public GameObject arrowSequencePrefab;
     public Transform moveSetParent;
 
-    //How many sequences to spawn
-    public int sequenceCount;
-    //arrow many arrows to increment by per sequence
-    public int arrowIncrement;
-    //How many arrows per set
-    public int arrowCount;
-
-    private int sequenceIndex = 0;
+    public int sequenceIndex { get; set; } = -1;
 
     private void OnEnable()
     {
@@ -33,18 +27,15 @@ public class MoveSetGenerator : MonoBehaviour
         EventManager.OnArrowKeyPress -= ProcessArrowSequence;
     }
 
-    private void Start()
+    public void GenerateMoveSet(int sequenceCount, int arrowCount)
     {
-        InitMoveSet();
-    }
+        foreach (ArrowSequence child in arrowSequences)
+        {
+            Destroy(child.gameObject);
+        }
+        arrowSequences.Clear();
+        sequenceIndex = -1;
 
-    void InitMoveSet()
-    {
-        SpawnSequence();
-    }
-
-    void SpawnSequence()
-    {
         for (int i = 0; i < sequenceCount; i++)
         {
             var seq = Instantiate(arrowSequencePrefab, moveSetParent).GetComponent<ArrowSequence>();
@@ -70,12 +61,23 @@ public class MoveSetGenerator : MonoBehaviour
         return dir;
     }
 
-    void ProcessArrowSequence(Direction direction)
+    private void ProcessArrowSequence(Direction direction)
     {
-        for (int i = 0; i < arrowSequences.Count; i++)
+        bool isNoneActive = arrowSequences.All(a => !a.IsActiveMoveSet);
+        bool isAnyActive = arrowSequences.Any(a => a.IsActiveMoveSet);
+
+        if (isNoneActive)
         {
-            arrowSequences[i].sequenceIndex = sequenceIndex;
+            sequenceIndex = -1;
+            for(int i = 0; i < arrowSequences.Count; i++)
+            {
+                arrowSequences[i].ResetSequence();
+                arrowSequences[i].IsActiveMoveSet = true;
+            }
         }
+
         sequenceIndex++;
+
+        print(sequenceIndex);
     }
 }

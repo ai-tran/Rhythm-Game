@@ -7,13 +7,11 @@ using UnityEngine;
 /// </summary>
 public class ArrowSequence : MonoBehaviour
 {
+    private MoveSetGenerator moveSetGenerator;
     //list of arrow in this sequence
     public List<Arrow> arrows = new List<Arrow>();
 
-    public bool IsActiveSet { get; set; } = true;
-
-    //How far are we in move set
-    public int sequenceIndex = 0;
+    public bool IsActiveMoveSet { get; set; } = true;
     
     public void OnEnable()
     {
@@ -27,6 +25,8 @@ public class ArrowSequence : MonoBehaviour
 
     public void Init(GameObject arrowPrefab, List<Direction> directions)
     {
+        moveSetGenerator = FindObjectOfType<MoveSetGenerator>();
+
         //Instantiate and sets up arrow directions
         foreach (Direction direction in directions)
         {
@@ -42,15 +42,15 @@ public class ArrowSequence : MonoBehaviour
     /// <param name="direction"></param>
     private void ProcessArrowKey(Direction direction)
     {
-        if (IsActiveSet && !IsSequenceComplete())
+        if (IsActiveMoveSet && !IsSequenceComplete())
         {
-            if (arrows[sequenceIndex].direction == direction)
+            if (arrows[moveSetGenerator.sequenceIndex].direction == direction)
             {
-                arrows[sequenceIndex].IsPressed = true;
+                arrows[moveSetGenerator.sequenceIndex].IsPressed = true;
                 return;
             }
-            IsActiveSet = false;
             ResetSequence();
+            IsActiveMoveSet = false;
         }
     }
 
@@ -60,8 +60,6 @@ public class ArrowSequence : MonoBehaviour
     public void ResetSequence()
     {
         arrows.ForEach(arrow => arrow.IsPressed = false);
-        IsActiveSet = false;
-        sequenceIndex = 0;
     }
 
     public bool IsSequenceComplete()

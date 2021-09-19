@@ -21,11 +21,11 @@ public class HitAccuracyIndicator : MonoBehaviour
     {
         if (accuracyType == HitAccuracy.Perfect)
         {
-            indicatorSprite.sprite = GameManager.Instance.selectedSkin.perfectText;
+            indicatorSprite.sprite = GameManager.Instance.currentSkin.perfectText;
         }
         if (accuracyType == HitAccuracy.Miss)
         {
-            indicatorSprite.sprite = GameManager.Instance.selectedSkin.missText;
+            indicatorSprite.sprite = GameManager.Instance.currentSkin.missText;
         }
         transform.DOPunchScale(new Vector3(scaleSize, scaleSize, scaleSize), duration, vibrato, elasticty);
     }

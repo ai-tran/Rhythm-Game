@@ -14,7 +14,6 @@ public class Conductor : MonoBehaviour
 
     public SpriteRenderer character;
 
-
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
 
@@ -22,13 +21,17 @@ public class Conductor : MonoBehaviour
     private readonly List<Beat> beats = new List<Beat>();
 
     //Beat counter stuff
-    public int beatCounterCount = 5;
-    public GameObject beatCountPrefab;
+    public int beatCount = 5;
     public float horizontalOffset = 0.3f;
     public BeatCounter beatCounter;
-    private BeatCount[] beatCounters;
+    private BeatCount[] beatCounts;
     private int beatCounterIndex = 0;
-    public int beatHitMarker = 0;
+    public int hitIndex = 0;
+
+    //Move set settings
+    public MoveSetGenerator moveSetGenerator;
+    public int sequenceCount = 3;
+    public int arrowCount = 4;
 
     private HitAccuracy beatHitAccuracy;
     private bool isBeatHit = false;
@@ -43,28 +46,16 @@ public class Conductor : MonoBehaviour
         EventManager.OnBeatHit -= OnBeatHit;
     }
 
-    private void Start()
+    private void Awake()
     {
-        beatCounter = FindObjectOfType<BeatCounter>();
-        beatCounters = beatCounter.beatCounters;
-        SpawnBeatCounter(beatCounterCount, horizontalOffset);
-    }
-
-    private void SpawnBeatCounter(int count, float offset)
-    {
-        BeatCounter beatcounter = Instantiate(beatCounter).GetComponent<BeatCounter>();
-        for (int i = 0; i < count; i++)
-        {
-            beatCounter
-
-
-        }
+        beatCounter.Init(hitIndex, beatCount);
+        beatCounts = beatCounter.beatCounts;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (beatCounterIndex >= beatCounters.Length)
+        if (beatCounterIndex >= beatCounts.Length)
         {
             beatCounterIndex = 0;
         }
@@ -80,17 +71,23 @@ public class Conductor : MonoBehaviour
         foreach (Beat beat in beats)
         {
             isBeatHit = false;
-            beatCounters[beatCounterIndex].OnBeat();
+            beatCounts[beatCounterIndex].OnBeat();
+
+            if (beatCounterIndex == 0)
+            {
+                beatCounts[beatCounterIndex]
+                    .OnComplete(() => moveSetGenerator.GenerateMoveSet(sequenceCount,arrowCount));
+            }
 
             if (beatCounterIndex != 0)
             {
                 int previousIndex = beatCounterIndex - 1;
-                beatCounters[previousIndex].OffBeat();
+                beatCounts[previousIndex].OffBeat();
             }
             else
             {
-                int lastIndex = beatCounters.Length - 1;
-                beatCounters[lastIndex].OffBeat();
+                int lastIndex = beatCounts.Length - 1;
+                beatCounts[lastIndex].OffBeat();
             }
 
             beatCounterIndex++;
@@ -98,8 +95,7 @@ public class Conductor : MonoBehaviour
         //Keep track of the previous playback time of the AudioSource.
         prevTime = time;
 
-        // make 8 a variable
-        if (beatCounterIndex == 8)
+        if (beatCounterIndex == hitIndex)
         {
             beatHitAccuracy = HitAccuracy.Perfect;
         }

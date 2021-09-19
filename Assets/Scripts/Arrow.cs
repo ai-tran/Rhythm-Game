@@ -27,7 +27,7 @@ public class Arrow : MonoBehaviour
     private Skin currentSkin;
     private void Awake()
     {
-        currentSkin = GameManager.Instance.selectedSkin;
+        currentSkin = GameManager.Instance.currentSkin;
     }
 
     private void SetBackground(bool isComplete)
@@ -61,5 +61,10 @@ public class Arrow : MonoBehaviour
                 arrow.transform.Rotate(0, 0, 180);  
                 break;
         }
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Clear();
     }
 }

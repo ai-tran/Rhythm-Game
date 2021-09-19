@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class BeatCounter : MonoBehaviour
 {
-    public int beatHitMarker;
-    // Start is called before the first frame update
+
     public BeatCount[] beatCounters;
-    void Awake()
+
+    /// <param name="beatHitMarker">Which beat to set the marker</param>
+    /// <param name="beatCount">how many beat counts to spawn</param>
+    public void Init(int beatHitMarker, int beatCount)
     {
         beatCounters = transform.GetComponentsInChildren<BeatCount>();
         beatCounters[beatHitMarker].SetHitMarker();
+    }
+
+    public void SpawnBeatCount(int beatCount)
+    {
+        for(int i = 0; i < beatCount; i++)
+        {
+
+        }
     }
 }

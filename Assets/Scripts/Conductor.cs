@@ -52,9 +52,12 @@ public class Conductor : MonoBehaviour
 
     private void SpawnBeatCounter(int count, float offset)
     {
-        for(int i = 0; i < count; i++)
+        BeatCounter beatcounter = Instantiate(beatCounter).GetComponent<BeatCounter>();
+        for (int i = 0; i < count; i++)
         {
-            //BeatCount temp = Instantiate()
+            beatCounter
+
+
         }
     }
 

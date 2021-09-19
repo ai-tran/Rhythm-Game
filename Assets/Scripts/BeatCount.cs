@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class BeatCount : MonoBehaviour
 {
-    public SpriteRenderer sprite;
+    public Image image;
 
     public void OnBeat()
     {
@@ -19,6 +20,6 @@ public class BeatCount : MonoBehaviour
 
     public void SetHitMarker()
     {
-        sprite.color = Color.green;
+        image.color = Color.green;
     }
 }

@@ -12,7 +12,8 @@ public class Conductor : MonoBehaviour
     public RhythmAnalyzer analyzer;
     public RhythmData rhythmData;
 
-    public Slider slider;
+    public Slider beatSlider;
+    public Slider hitSlider;
 
     public AudioSource audioSource;
 
@@ -21,8 +22,6 @@ public class Conductor : MonoBehaviour
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
 
-    private float beatHitPercent = 0.8f;
-    private float prevTime = 0;
     private readonly List<Beat> beats = new List<Beat>();
 
     //Move set settings
@@ -33,21 +32,31 @@ public class Conductor : MonoBehaviour
     private HitAccuracy beatHitAccuracy;
     private bool isBeatHit = false;
 
-    int beatIndex = 0;
-    int nextIndex = 1;
+    private float perfectPadding = 0.2f;
 
-    //the current position of the song (in seconds)
-    float songPosition;
+    [Tooltip("Song beats per minute")]
+    public float songBpm = 96;
+    [Tooltip("The number of seconds for each song beat")]
+    public float secPerBeat;
+    [Tooltip("Current song position, in seconds")]
+    public float songPosition;
+    [Tooltip("Current song position, in beats")]
+    public float songPositionInBeats;
+    [Tooltip("How many seconds have passed since the song started")]
+    public float dspSongTime;
+    [Tooltip("The offset to the first beat of the song in seconds")]
+    public float firstBeatOffset = 3.90f;
 
-    //the current position of the song (in beats)
-    float songPosInBeats;
+    private float prevBeatTimestamp;
+    private float nextBeatTimestamp;
+    private float beatindex = 1;
+    private float beatPerSlide = 5;
+    private float beatPercent;
+    public float hitBeatTimestamp;
 
-    //the duration of a beat
-    float secPerBeat;
+    private float prevTime;
 
-    //how much time (in seconds) has passed since the song started
-    float dsptimesong;
-
+    private float userHitTimestamp;
     private void OnEnable()
     {
         EventManager.OnBeatHit += OnBeatHit;
@@ -60,57 +69,69 @@ public class Conductor : MonoBehaviour
 
     private void Start()
     {
-        //Find all beats for the part of the song that is currently playing.
-        rhythmData.GetFeatures<Beat>(beats, 0, 115.28f);
-        audioSource.pitch = 1f;
-        //print(beats.Count);
+        secPerBeat = 60f / songBpm;
+        dspSongTime = (float)AudioSettings.dspTime;
 
+        prevBeatTimestamp = secPerBeat;
+        nextBeatTimestamp = secPerBeat * beatPerSlide;
+
+        rhythmData.GetFeatures<Beat>(beats, 0, 115.28f);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (beatIndex >= beats.Count)
+        songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
+        songPositionInBeats = songPosition / secPerBeat;
+
+        beatPercent = (songPosition - prevBeatTimestamp) / (nextBeatTimestamp - prevBeatTimestamp);
+
+        IncrementBeatSet();
+
+        if (Utilities.InRange(hitBeatTimestamp, prevTime, songPosition))
         {
-            return;
+            print("Beat Hit");
         }
 
-        //Get the current playback time of the AudioSource.
-        float time = audioSource.time;
-        float prevBeatTime = beatIndex == 0 ? 0f : beats[beatIndex - 1].timestamp;
-        float nextBeatTime = beats[beatIndex].timestamp;
-        
-        // this is the beat percent between the last beat and current beat
-        float beatPercent = (time - prevBeatTime) / (nextBeatTime - prevBeatTime);
-        percentText.text = beatPercent.ToString();
+        beatSlider.minValue = prevBeatTimestamp;
+        beatSlider.maxValue = nextBeatTimestamp;
 
-        float sliderPercent = Mathf.Min(beatPercent, 1f);
+        hitSlider.minValue = prevBeatTimestamp;
+        hitSlider.maxValue = nextBeatTimestamp;
 
-        if (beatIndex == 0)
+        hitSlider.value = hitBeatTimestamp;
+        beatSlider.value = songPosition;
+
+
+        prevTime = songPosition;
+    }
+
+    /// <summary>
+    /// Update the slider to head to the next set of beats and reset next index to current index
+    /// </summary>
+    private void IncrementBeatSet()
+    {
+        if (songPosition > nextBeatTimestamp)
         {
-            sliderPercent *= beatHitPercent;
-        }
-        else
-        {
-            sliderPercent -= (1f - beatHitPercent);
-
-            if (sliderPercent < 0f)
-            {
-                sliderPercent = beatHitPercent + (1f - beatHitPercent + sliderPercent);
-            }
-        }
-
-        slider.value = sliderPercent;
-
-        if (beatPercent >= 1f)
-        {
-            print("beat");
-            beatIndex++;
+            beatindex++;
+            prevBeatTimestamp = nextBeatTimestamp;
+            nextBeatTimestamp = secPerBeat * (beatPerSlide * beatindex);
+            hitBeatTimestamp = nextBeatTimestamp - secPerBeat;
+            moveSetGenerator.GenerateMoveSet(sequenceCount, arrowCount);
         }
     }
 
     private void OnBeatHit()
     {
+        userHitTimestamp = songPosition;
+        if(Utilities.InRange(userHitTimestamp, hitBeatTimestamp - perfectPadding, hitBeatTimestamp + perfectPadding)){
+            beatHitAccuracy = HitAccuracy.Perfect;
+        }
+        else
+        {
+            beatHitAccuracy = HitAccuracy.Miss;
+        }
+
         HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
         temp.Init(beatHitAccuracy);
     }

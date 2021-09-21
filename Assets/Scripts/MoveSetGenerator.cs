@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class MoveSetGenerator : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class MoveSetGenerator : MonoBehaviour
         EventManager.OnArrowKeyPress -= ProcessArrowSequence;
     }
 
-    public void GenerateMoveSet(int sequenceCount, int arrowCount)
+    public MoveSetGenerator GenerateMoveSet(int sequenceCount, int arrowCount)
     {
         foreach (ArrowSequence child in arrowSequences)
         {
@@ -40,6 +41,13 @@ public class MoveSetGenerator : MonoBehaviour
             seq.Init(arrowPrefab, RandomDirectionsList(arrowCount));
             arrowSequences.Add(seq);
         }
+
+        return this;
+    }
+    public MoveSetGenerator OnComplete(Action action)
+    {
+        action.Invoke();
+        return this;
     }
 
     /// <summary>
@@ -53,12 +61,11 @@ public class MoveSetGenerator : MonoBehaviour
         for (int i = 0; i < listSize; i++)
         {
             // make 3 a variable
-            Direction randDir = (Direction)Random.Range(0, 3);
+            Direction randDir = (Direction)UnityEngine.Random.Range(0, 3);
             dir.Add(randDir);
         }
         return dir;
     }
-
     private void ProcessArrowSequence(Direction direction)
     {
         bool isNoneActive = arrowSequences.All(a => !a.IsActiveMoveSet);

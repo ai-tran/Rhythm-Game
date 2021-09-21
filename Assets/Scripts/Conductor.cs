@@ -12,25 +12,21 @@ public class Conductor : MonoBehaviour
     public RhythmAnalyzer analyzer;
     public RhythmData rhythmData;
 
+    [Header("Assign References")]
     public Slider beatSlider;
     public Slider hitSlider;
-
-    public AudioSource audioSource;
-
-    public SpriteRenderer character;
-
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
 
     private readonly List<Beat> beats = new List<Beat>();
 
-    //Move set settings
+    //Move set settings todo move into SO
     public MoveSetGenerator moveSetGenerator;
     public int sequenceCount = 3;
     public int arrowCount = 4;
 
     private HitAccuracy beatHitAccuracy;
-    private bool isBeatHit = false;
+    private bool isBeatHitForTurn = false;
 
     private float perfectPadding = 0.2f;
 
@@ -50,7 +46,7 @@ public class Conductor : MonoBehaviour
     private float prevBeatTimestamp;
     private float nextBeatTimestamp;
     private float beatindex = 1;
-    private float beatPerSlide = 5;
+    private float beatPerSlide = 3;
     private float beatPercent;
     public float hitBeatTimestamp;
 
@@ -86,31 +82,6 @@ public class Conductor : MonoBehaviour
 
         beatPercent = (songPosition - prevBeatTimestamp) / (nextBeatTimestamp - prevBeatTimestamp);
 
-        IncrementBeatSet();
-
-        if (Utilities.InRange(hitBeatTimestamp, prevTime, songPosition))
-        {
-            print("Beat Hit");
-        }
-
-        beatSlider.minValue = prevBeatTimestamp;
-        beatSlider.maxValue = nextBeatTimestamp;
-
-        hitSlider.minValue = prevBeatTimestamp;
-        hitSlider.maxValue = nextBeatTimestamp;
-
-        hitSlider.value = hitBeatTimestamp;
-        beatSlider.value = songPosition;
-
-
-        prevTime = songPosition;
-    }
-
-    /// <summary>
-    /// Update the slider to head to the next set of beats and reset next index to current index
-    /// </summary>
-    private void IncrementBeatSet()
-    {
         if (songPosition > nextBeatTimestamp)
         {
             beatindex++;
@@ -118,21 +89,49 @@ public class Conductor : MonoBehaviour
             nextBeatTimestamp = secPerBeat * (beatPerSlide * beatindex);
             hitBeatTimestamp = nextBeatTimestamp - secPerBeat;
             moveSetGenerator.GenerateMoveSet(sequenceCount, arrowCount);
+            isBeatHitForTurn = false;
         }
+
+        if (Utilities.InRange(hitBeatTimestamp, prevTime, songPosition))
+        {
+            print("Beat Hit");
+        }
+
+        SetSliderValue(prevBeatTimestamp, nextBeatTimestamp, hitBeatTimestamp, songPosition);
+
+        prevTime = songPosition;
+
+    }
+
+    private void SetSliderValue(float sliderMin, float sliderMax, float hitValue, float sliderValue)
+    {
+        beatSlider.minValue = sliderMin;
+        beatSlider.maxValue = sliderMax;
+
+        hitSlider.minValue = sliderMin;
+        hitSlider.maxValue = sliderMax;
+
+        hitSlider.value = hitValue;
+        beatSlider.value = sliderValue;
     }
 
     private void OnBeatHit()
     {
-        userHitTimestamp = songPosition;
-        if(Utilities.InRange(userHitTimestamp, hitBeatTimestamp - perfectPadding, hitBeatTimestamp + perfectPadding)){
-            beatHitAccuracy = HitAccuracy.Perfect;
-        }
-        else
+        if (!isBeatHitForTurn)
         {
-            beatHitAccuracy = HitAccuracy.Miss;
-        }
+            userHitTimestamp = songPosition;
+            if (Utilities.InRange(userHitTimestamp, hitBeatTimestamp - perfectPadding, hitBeatTimestamp + perfectPadding))
+            {
+                beatHitAccuracy = HitAccuracy.Perfect;
+            }
+            else
+            {
+                beatHitAccuracy = HitAccuracy.Miss;
+            }
 
-        HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
-        temp.Init(beatHitAccuracy);
+            HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
+            temp.Init(beatHitAccuracy);
+            isBeatHitForTurn = true;
+        }
     }
 }

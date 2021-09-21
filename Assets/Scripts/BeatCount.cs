@@ -15,9 +15,10 @@ public class BeatCount : MonoBehaviour
         image.sprite = GameManager.Instance.currentSkin.beatCount;
     }
 
-    public void OnBeat()
+    public BeatCount OnBeat()
     {
-        transform.DOScale(1.2f, 0.2f);
+        transform.DOScale(1.4f, 0.2f);
+        return this;
     }
 
     public BeatCount OnComplete(Action onComplete)
@@ -26,13 +27,15 @@ public class BeatCount : MonoBehaviour
         return this;
     }
 
-    public void OffBeat()
+    public BeatCount OffBeat()
     {
         this.transform.DOScale(1, 0.2f);
+        return this;
     }
 
-    public void SetHitMarker()
+    public BeatCount SetHitMarker()
     {
         image.color = Color.green;
+        return this;
     }
 }

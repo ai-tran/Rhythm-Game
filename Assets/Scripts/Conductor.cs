@@ -1,14 +1,18 @@
-using DG.Tweening;
 using RhythmTool;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Conductor : MonoBehaviour
 {
+    public TextMeshProUGUI percentText;
+
     [Header("Rhythm Tool Plugin")]
     public RhythmAnalyzer analyzer;
     public RhythmData rhythmData;
 
+    public Slider slider;
 
     public AudioSource audioSource;
 
@@ -17,6 +21,7 @@ public class Conductor : MonoBehaviour
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
 
+    private float beatHitPercent = 0.8f;
     private float prevTime = 0;
     private readonly List<Beat> beats = new List<Beat>();
 
@@ -36,6 +41,21 @@ public class Conductor : MonoBehaviour
     private HitAccuracy beatHitAccuracy;
     private bool isBeatHit = false;
 
+    int beatIndex = 0;
+    int nextIndex = 1;
+
+    //the current position of the song (in seconds)
+    float songPosition;
+
+    //the current position of the song (in beats)
+    float songPosInBeats;
+
+    //the duration of a beat
+    float secPerBeat;
+
+    //how much time (in seconds) has passed since the song started
+    float dsptimesong;
+
     private void OnEnable()
     {
         EventManager.OnBeatHit += OnBeatHit;
@@ -46,73 +66,60 @@ public class Conductor : MonoBehaviour
         EventManager.OnBeatHit -= OnBeatHit;
     }
 
-    private void Awake()
+    private void Start()
     {
-        beatCounter.Init(hitIndex, beatCount);
-        beatCounts = beatCounter.beatCounts;
+        //Find all beats for the part of the song that is currently playing.
+        rhythmData.GetFeatures<Beat>(beats, 0, 115.28f);
+        audioSource.pitch = 1f;
+        //print(beats.Count);
+
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (beatCounterIndex >= beatCounts.Length)
+        if (beatIndex >= beats.Count)
         {
-            beatCounterIndex = 0;
+            return;
         }
 
-        //Clear the list.
-        beats.Clear();
+        //Get the current playback time of the AudioSource.
         float time = audioSource.time;
+        float prevBeatTime = beatIndex == 0 ? 0f : beats[beatIndex - 1].timestamp;
+        float nextBeatTime = beats[beatIndex].timestamp;
+        
+        // this is the beat percent between the last beat and current beat
+        float beatPercent = (time - prevBeatTime) / (nextBeatTime - prevBeatTime);
+        percentText.text = beatPercent.ToString();
 
-        //Find all beats for the part of the song that is currently playing.
-        rhythmData.GetFeatures(beats, prevTime, time);
+        float sliderPercent = Mathf.Min(beatPercent, 1f);
 
-        //Do something with the Beats here.
-        foreach (Beat beat in beats)
+        if (beatIndex == 0)
         {
-            isBeatHit = false;
-            beatCounts[beatCounterIndex].OnBeat();
-
-            if (beatCounterIndex == 0)
-            {
-                beatCounts[beatCounterIndex]
-                    .OnComplete(() => moveSetGenerator.GenerateMoveSet(sequenceCount,arrowCount));
-            }
-
-            if (beatCounterIndex != 0)
-            {
-                int previousIndex = beatCounterIndex - 1;
-                beatCounts[previousIndex].OffBeat();
-            }
-            else
-            {
-                int lastIndex = beatCounts.Length - 1;
-                beatCounts[lastIndex].OffBeat();
-            }
-
-            beatCounterIndex++;
-        }
-        //Keep track of the previous playback time of the AudioSource.
-        prevTime = time;
-
-        if (beatCounterIndex == hitIndex)
-        {
-            beatHitAccuracy = HitAccuracy.Perfect;
+            sliderPercent *= beatHitPercent;
         }
         else
         {
-            beatHitAccuracy = HitAccuracy.Miss;
+            sliderPercent -= (1f - beatHitPercent);
+
+            if (sliderPercent < 0f)
+            {
+                sliderPercent = beatHitPercent + (1f - beatHitPercent + sliderPercent);
+            }
         }
 
+        slider.value = sliderPercent;
+
+        if (beatPercent >= 1f)
+        {
+            print("beat");
+            beatIndex++;
+        }
     }
 
     private void OnBeatHit()
     {
-        if (!isBeatHit)
-        {
-            HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
-            temp.Init(beatHitAccuracy);
-            isBeatHit = true;
-        }
+        HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
+        temp.Init(beatHitAccuracy);
     }
 }

@@ -25,14 +25,6 @@ public class Conductor : MonoBehaviour
     private float prevTime = 0;
     private readonly List<Beat> beats = new List<Beat>();
 
-    //Beat counter stuff
-    public int beatCount = 5;
-    public float horizontalOffset = 0.3f;
-    public BeatCounter beatCounter;
-    private BeatCount[] beatCounts;
-    private int beatCounterIndex = 0;
-    public int hitIndex = 0;
-
     //Move set settings
     public MoveSetGenerator moveSetGenerator;
     public int sequenceCount = 3;

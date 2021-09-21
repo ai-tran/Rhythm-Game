@@ -7,15 +7,15 @@ public class Skin : ScriptableObject
 {
     [Header("General Appearance")]
     public Sprite perfectText;
+    public Sprite greatText;
     public Sprite missText;
+    public AudioClip perfectSfx;
+    public AudioClip missSfx;
 
     [Header("Move Set")]
     public Sprite arrow;
     public Sprite arrowPressedBg;
     public Sprite arrowDefaultBg;
-
-    [Header("Beat Counter")]
-    public Sprite beatCount;
 
     [Header("Prefabs")]
     public GameObject beatCountPrefab;

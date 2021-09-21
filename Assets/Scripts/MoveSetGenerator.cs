@@ -5,8 +5,6 @@ using System.Linq;
 
 public class MoveSetGenerator : MonoBehaviour
 {
-    public int moveSetCount;
-
     //amount of moves, amount of arrow per move, list of directions
     readonly List<ArrowSequence> arrowSequences = new List<ArrowSequence>();
 

@@ -97,13 +97,13 @@ public class Conductor : MonoBehaviour
             print("Beat Hit");
         }
 
-        SetSliderValue(prevBeatTimestamp, nextBeatTimestamp, hitBeatTimestamp, songPosition);
+        SetSlidersValue(prevBeatTimestamp, nextBeatTimestamp, hitBeatTimestamp, songPosition);
 
         prevTime = songPosition;
 
     }
 
-    private void SetSliderValue(float sliderMin, float sliderMax, float hitValue, float sliderValue)
+    private void SetSlidersValue(float sliderMin, float sliderMax, float hitValue, float sliderValue)
     {
         beatSlider.minValue = sliderMin;
         beatSlider.maxValue = sliderMax;

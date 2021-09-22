@@ -11479,37 +11479,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Beats
   _features:
-  - timestamp: 5.2244897
+  - timestamp: 4.026
+    length: 0
+    bpm: 0
+  - timestamp: 6.526
     length: 0
     bpm: 95.703125
-  - timestamp: 5.8746486
-    length: 0
-    bpm: 95.703125
-  - timestamp: 6.5015874
-    length: 0
-    bpm: 95.703125
-  - timestamp: 7.128526
-    length: 0
-    bpm: 95.703125
-  - timestamp: 7.732245
-    length: 0
-    bpm: 95.703125
-  - timestamp: 8.359183
-    length: 0
-    bpm: 95.703125
-  - timestamp: 8.986122
+  - timestamp: 9.026
     length: 0
     bpm: 96.05891
-  - timestamp: 9.589841
-    length: 0
-    bpm: 96.41733
-  - timestamp: 10.19356
-    length: 0
-    bpm: 96.41733
-  - timestamp: 10.820498
-    length: 0
-    bpm: 96.41733
-  - timestamp: 11.447437
+  - timestamp: 11.526
     length: 0
     bpm: 96.41733
   - timestamp: 12.074376

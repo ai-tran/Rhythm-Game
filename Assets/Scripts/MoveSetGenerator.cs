@@ -14,6 +14,9 @@ public class MoveSetGenerator : MonoBehaviour
     public GameObject arrowSequencePrefab;
     public Transform moveSetParent;
 
+    public delegate void MoveSetComplete();
+    public static event MoveSetComplete OnMoveSetComplete;
+
     public int sequenceIndex { get; set; } = -1;
 
     private void OnEnable()
@@ -68,8 +71,14 @@ public class MoveSetGenerator : MonoBehaviour
     }
     private void ProcessArrowSequence(Direction direction)
     {
+        //need an is valid check
+        if (IsAnyArrowSequenceComplete(arrowSequences))
+        {
+            OnMoveSetComplete.Invoke();
+            return;
+        }
+
         bool isNoneActive = arrowSequences.All(a => !a.IsActiveMoveSet);
-        bool isAnyActive = arrowSequences.Any(a => a.IsActiveMoveSet);
 
         if (isNoneActive)
         {
@@ -82,7 +91,10 @@ public class MoveSetGenerator : MonoBehaviour
         }
 
         sequenceIndex++;
+    }
 
-        print(sequenceIndex);
+    private bool IsAnyArrowSequenceComplete(List<ArrowSequence>sequence)
+    {
+        return sequence.Any(d => d.IsSequenceComplete);
     }
 }

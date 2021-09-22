@@ -21,19 +21,19 @@ public class EventManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            OnArrowKeyPress(Direction.Left);
+            OnArrowKeyPress.Invoke(Direction.Left);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            OnArrowKeyPress(Direction.Right);
+            OnArrowKeyPress.Invoke(Direction.Right);
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            OnArrowKeyPress(Direction.Up);
+            OnArrowKeyPress.Invoke(Direction.Up);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            OnArrowKeyPress(Direction.Down);
+            OnArrowKeyPress.Invoke(Direction.Down);
         }
     }
 }

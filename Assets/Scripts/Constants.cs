@@ -9,9 +9,9 @@ public enum Direction
 
 public enum HitAccuracy
 {
-    Perfect,
-    Great,
-    Miss
+    Perfect = 100,
+    Great = 50,
+    Miss = 0
 }
 
 public class Constants

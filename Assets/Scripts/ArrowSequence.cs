@@ -12,7 +12,14 @@ public class ArrowSequence : MonoBehaviour
     public List<Arrow> arrows = new List<Arrow>();
 
     public bool IsActiveMoveSet { get; set; } = true;
-    
+    public bool IsSequenceComplete
+    {
+        get
+        {
+            return arrows.All(arrow => arrow.IsPressed);
+        }
+    }
+
     public void OnEnable()
     {
         EventManager.OnArrowKeyPress += ProcessArrowKey;
@@ -42,7 +49,7 @@ public class ArrowSequence : MonoBehaviour
     /// <param name="direction"></param>
     private void ProcessArrowKey(Direction direction)
     {
-        if (IsActiveMoveSet && !IsSequenceComplete())
+        if (IsActiveMoveSet && !IsSequenceComplete)
         {
             if (arrows[moveSetGenerator.sequenceIndex].direction == direction)
             {
@@ -62,8 +69,5 @@ public class ArrowSequence : MonoBehaviour
         arrows.ForEach(arrow => arrow.IsPressed = false);
     }
 
-    public bool IsSequenceComplete()
-    {
-        return arrows.All(arrow => arrow.IsPressed);
-    }
+
 }

@@ -16,7 +16,7 @@ MonoBehaviour:
   greatText: {fileID: 0}
   missText: {fileID: 21300000, guid: be2ead6f3d0444048abc988583226456, type: 3}
   perfectSfx: {fileID: 8300000, guid: ea57a0ec9baa7b14a8dd9d803ecd56c0, type: 3}
-  missSfx: {fileID: 8300000, guid: a409b56e26bf42f40a0a3255aef9d1e8, type: 3}
+  missSfx: {fileID: 0}
   arrow: {fileID: 21300000, guid: bf1cb1266a22e554486463c6a319cbad, type: 3}
   arrowPressedBg: {fileID: 21300000, guid: 44cac9d78d53b8942b9899bc2d8fbf05, type: 3}
   arrowDefaultBg: {fileID: 21300000, guid: 0946ea6a8a022de44a7a2404a05b9baf, type: 3}

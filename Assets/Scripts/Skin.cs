@@ -16,8 +16,4 @@ public class Skin : ScriptableObject
     public Sprite arrow;
     public Sprite arrowPressedBg;
     public Sprite arrowDefaultBg;
-
-    [Header("Prefabs")]
-    public GameObject beatCountPrefab;
-    public GameObject beatCounterPrefab;
 }

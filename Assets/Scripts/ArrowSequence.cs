@@ -12,6 +12,8 @@ public class ArrowSequence : MonoBehaviour
     public List<Arrow> arrows = new List<Arrow>();
 
     public bool IsActiveMoveSet { get; set; } = true;
+
+    // probably make a fn
     public bool IsSequenceComplete
     {
         get
@@ -68,6 +70,4 @@ public class ArrowSequence : MonoBehaviour
     {
         arrows.ForEach(arrow => arrow.IsPressed = false);
     }
-
-
 }

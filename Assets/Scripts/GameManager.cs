@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     //Todo load this skin from settings
     public Skin currentSkin;
+    //Todo load per selection
+    public Song currentSong;
 
     // Start is called before the first frame update
     void Awake()

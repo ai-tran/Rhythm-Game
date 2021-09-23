@@ -1715,6 +1715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSkin: {fileID: 11400000, guid: ca276e3bcb0904d4a8aac53339fd09e6, type: 2}
+  currentSong: {fileID: 11400000, guid: d5a9e48f4d4afda4a92adbfbec8ceb34, type: 2}
 --- !u!4 &869383503
 Transform:
   m_ObjectHideFlags: 0
@@ -3140,6 +3141,7 @@ MonoBehaviour:
   rhythmData: {fileID: 11400000, guid: efafd0d78c0e60445b6f28675cb99e3e, type: 2}
   beatSlider: {fileID: 626828866}
   hitSlider: {fileID: 821735807}
+  audioSource: {fileID: 798325723}
   hitAccuracyPrefab: {fileID: 2682194218109391185, guid: d9d18e13091625442a317c30bda572de, type: 3}
   HitAccuracySpawn: {fileID: 259085892}
   comboCounter: {fileID: 1878423359}
@@ -3150,11 +3152,6 @@ MonoBehaviour:
   songBpm: 96
   beatsPerSec: 0
   songPosition: 0
-  songPositionInBeats: 0
-  dspSongTime: 0
-  hitOffset: 0
-  hitBeatTimestamp: 0
-  audioSource: {fileID: 798325723}
 --- !u!4 &1799609891
 Transform:
   m_ObjectHideFlags: 0

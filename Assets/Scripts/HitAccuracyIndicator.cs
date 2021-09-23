@@ -25,7 +25,7 @@ public class HitAccuracyIndicator : MonoBehaviour
             accuracySprite.sprite = currentSkin.perfectText;
             soundFx.clip = currentSkin.perfectSfx;
         }
-        if (accuracyType == HitAccuracy.Miss)
+        else if (accuracyType == HitAccuracy.Miss)
         {
             accuracySprite.sprite = currentSkin.missText;
             soundFx.clip = currentSkin.missSfx;

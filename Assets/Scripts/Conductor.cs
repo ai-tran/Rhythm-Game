@@ -14,6 +14,7 @@ public class Conductor : MonoBehaviour
     [Header("Assign References")]
     public Slider beatSlider;
     public Slider hitSlider;
+    public AudioSource audioSource;
 
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
@@ -31,38 +32,43 @@ public class Conductor : MonoBehaviour
 
     private bool isBeatHitForTurn = false;
 
-    private float hitPadding = 0.1f;
-
-    [Tooltip("Song beats per minute")]
-    public float songBpm = 96;
-    [Tooltip("The number of seconds for each song beat")]
-    public float beatsPerSec;
-    [Tooltip("Current song position, in seconds")]
+    //The number of seconds for each song beat
+    private float beatsPerSec;
     public float songPosition;
-    [Tooltip("Current song position, in beats")]
-    public float songPositionInBeats;
-    [Tooltip("How many seconds have passed since the song started")]
-    public float dspSongTime;
-    [Tooltip("The offset to the first beat of the song in seconds")]
-    private float firstBeatOffset = 4.026f;
 
-    public float hitOffset = 0f;
+    private float songBpm
+    {
+        get
+        {
+            return GameManager.Instance.currentSong.bpm;
+        }
+    }
+    private float firstBeatOffset { get
+        {
+            return GameManager.Instance.currentSong.firstBeatOffset;
+        } 
+    }
+    private int beatsPerSlide
+    {
+        get
+        {
+            return GameManager.Instance.currentSong.beatsPerSlide;
+        }
+    }
 
+    private float hitBeatTimestamp;
     private float prevBeatTimestamp;
     private float nextBeatTimestamp;
     private int beatindex = 1;
-    private int beatsPerSlide = 3;
+
     public float beatPercent { get; private set; }
-    public float hitBeatTimestamp;
 
-    List<float> beats = new List<float>();
+    private List<float> beats = new List<float>();
 
-    public AudioSource audioSource;
     private void OnEnable()
     {
         EventManager.OnBeatHit += OnBeatHit;
     }
-
     private void OnDisable()
     {
         EventManager.OnBeatHit -= OnBeatHit;
@@ -87,7 +93,6 @@ public class Conductor : MonoBehaviour
         hitBeatTimestamp = beats[beatsPerSlide - 1];
     }
 
-    // Update is called once per frame
     private void Update()
     {
         songPosition = audioSource.time;
@@ -100,6 +105,7 @@ public class Conductor : MonoBehaviour
             prevBeatTimestamp = nextBeatTimestamp;
             nextBeatTimestamp = beats[beatindex * beatsPerSlide];
             hitBeatTimestamp = beats[beatindex * beatsPerSlide - 1];
+
             moveSetGenerator.GenerateMoveSet(sequenceCount, arrowCount);
 
             //check if user missed beat hit once slider is complete
@@ -132,8 +138,8 @@ public class Conductor : MonoBehaviour
     }
     private void OnBeatHit()
     {
-
         bool isAnySequenceComplete = moveSetGenerator.IsAnySequenceComplete;
+        print(isAnySequenceComplete);
 
         float hitAccuracyPercent = (songPosition > hitBeatTimestamp) ?
         (songPosition - nextBeatTimestamp) / (hitBeatTimestamp - nextBeatTimestamp) :
@@ -149,6 +155,7 @@ public class Conductor : MonoBehaviour
             }
             else
             {
+                beatHitAccuracy = HitAccuracy.Miss;
                 SetComboCounter(0);
             }
 
@@ -190,12 +197,5 @@ public class Conductor : MonoBehaviour
             return HitAccuracy.Great;
         }
         return HitAccuracy.Miss;
-    }
-    private void DebugSongSync()
-    {
-        print("curr song pos: " + songPosition);
-        print("beat timestamp: " + hitBeatTimestamp);
-        print("prev beat timestamp: " + prevBeatTimestamp);
-        print("next beat timestamp: " + nextBeatTimestamp);
     }
 }

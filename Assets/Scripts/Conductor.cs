@@ -139,7 +139,6 @@ public class Conductor : MonoBehaviour
     private void OnBeatHit()
     {
         bool isAnySequenceComplete = moveSetGenerator.IsAnySequenceComplete;
-        print(isAnySequenceComplete);
 
         float hitAccuracyPercent = (songPosition > hitBeatTimestamp) ?
         (songPosition - nextBeatTimestamp) / (hitBeatTimestamp - nextBeatTimestamp) :
@@ -188,13 +187,17 @@ public class Conductor : MonoBehaviour
     }
     private HitAccuracy GetHitAccuracy(float percent)
     {
-        if (percent >= 0.9f)
+        if (percent >= 0.95f)
         {
             return HitAccuracy.Perfect;
         }
-        if (percent >= 0.8f)
+        if (percent >= 0.90f)
         {
             return HitAccuracy.Great;
+        }
+        if (percent >= 0.86f)
+        {
+            return HitAccuracy.Cool;
         }
         return HitAccuracy.Miss;
     }

@@ -20,16 +20,26 @@ public class HitAccuracyIndicator : MonoBehaviour
     {
         currentSkin = GameManager.Instance.currentSkin;
 
-        if (accuracyType == HitAccuracy.Perfect)
+        switch (accuracyType)
         {
-            accuracySprite.sprite = currentSkin.perfectText;
-            soundFx.clip = currentSkin.perfectSfx;
+            case HitAccuracy.Perfect:
+                accuracySprite.sprite = currentSkin.perfectText;
+                soundFx.clip = currentSkin.perfectSfx;
+                break;
+            case HitAccuracy.Great:
+                accuracySprite.sprite = currentSkin.greatText;
+                soundFx.clip = currentSkin.perfectSfx;
+                break;
+            case HitAccuracy.Cool:
+                accuracySprite.sprite = currentSkin.coolText;
+                soundFx.clip = currentSkin.perfectSfx;
+                break;
+            case HitAccuracy.Miss:
+                accuracySprite.sprite = currentSkin.missText;
+                soundFx.clip = currentSkin.missSfx;
+                break;
         }
-        else if (accuracyType == HitAccuracy.Miss)
-        {
-            accuracySprite.sprite = currentSkin.missText;
-            soundFx.clip = currentSkin.missSfx;
-        }
+
         soundFx.Play();
         transform.DOPunchScale(new Vector3(scaleSize, scaleSize, scaleSize), duration, vibrato, elasticty);
     }

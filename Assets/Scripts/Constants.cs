@@ -10,7 +10,8 @@ public enum Direction
 public enum HitAccuracy
 {
     Perfect = 100,
-    Great = 50,
+    Great = 80,
+    Cool = 50,
     Miss = 0
 }
 

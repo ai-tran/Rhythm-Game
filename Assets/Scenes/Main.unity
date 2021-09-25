@@ -1509,7 +1509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 6267486627710510124, guid: 9fdc66a0c177a614e8f944e51217261e, type: 3}
   arrowSequencePrefab: {fileID: 5078557755310557553, guid: 95caf853f9bd0f541ab27005c3245913, type: 3}
-  moveSetParent: {fileID: 1331411621}
+  moveSetParent: {fileID: 0}
 --- !u!1 &1281724077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,7 +1622,6 @@ GameObject:
   - component: {fileID: 1331411620}
   - component: {fileID: 1331411619}
   - component: {fileID: 1331411618}
-  - component: {fileID: 1331411622}
   m_Layer: 5
   m_Name: MoveSet Parent
   m_TagString: Untagged
@@ -1710,32 +1709,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.97}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1331411622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331411617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 1
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1 &1411006857
 GameObject:
   m_ObjectHideFlags: 0

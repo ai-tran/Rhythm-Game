@@ -12,7 +12,7 @@ public class MoveSetGenerator : MonoBehaviour
     [Header("Move Set Assets")]
     public GameObject arrowPrefab;
     public GameObject arrowSequencePrefab;
-    public Transform moveSetParent;
+    public float verticalPadding = 0;
 
     public bool IsAnySequenceComplete
     {
@@ -48,7 +48,8 @@ public class MoveSetGenerator : MonoBehaviour
 
         for (int i = 0; i < sequenceCount; i++)
         {
-            var seq = Instantiate(arrowSequencePrefab, moveSetParent).GetComponent<ArrowSequence>();
+            Vector3 position = new Vector3(0, i * verticalPadding + transform.position.y, 0);
+            var seq = Instantiate(arrowSequencePrefab,position,Quaternion.identity,transform).GetComponent<ArrowSequence>();
             seq.Init(arrowPrefab, RandomDirectionsList(arrowCount));
             arrowSequences.Add(seq);
         }

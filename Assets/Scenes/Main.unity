@@ -1208,7 +1208,7 @@ GameObject:
   - component: {fileID: 954024264}
   - component: {fileID: 954024263}
   m_Layer: 0
-  m_Name: EventManager
+  m_Name: Global Event Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1402,6 +1402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c877ef24c6eac6e41aff02fa082f225e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCharacter: {fileID: 0}
 --- !u!1 &1174784526
 GameObject:
   m_ObjectHideFlags: 0

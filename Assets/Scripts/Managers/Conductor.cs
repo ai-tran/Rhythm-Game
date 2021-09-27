@@ -36,6 +36,8 @@ public class Conductor : MonoBehaviour
     private float beatsPerSec;
     public float songPosition;
 
+    public delegate void CompleteBeatHit();
+    public static event CompleteBeatHit OnCompleteBeatHit;
     private float songBpm
     {
         get
@@ -151,6 +153,7 @@ public class Conductor : MonoBehaviour
             if (isAnySequenceComplete && beatHitAccuracy != HitAccuracy.Miss)
             {
                 SetComboCounter(comboCount + 1);
+                OnCompleteBeatHit.Invoke();
             }
             else
             {

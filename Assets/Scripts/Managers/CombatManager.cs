@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    Character currentCharacter;
+    //Todo dynamically the current character
+    public Character currentCharacter;
+    public Player player;
      
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        Conductor.OnCompleteBeatHit += OnAttackHit;
+    }
+
+    private void OnDisable()
+    {
+        Conductor.OnCompleteBeatHit -= OnAttackHit;
+    }
+
+    private void OnAttackHit()
+    {
+        currentCharacter.OnHitAttack();
     }
 }

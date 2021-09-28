@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Character : MonoBehaviour
 {
     public Transform character;
+    public HealthBar healthBar;
 
     void Start()
     {

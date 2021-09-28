@@ -992,7 +992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b4fc9542e236d469516244b6fddf13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 1067465824}
+  character: {fileID: 1067465823}
+  healthBar: {fileID: 0}
 --- !u!1 &821735805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,7 +1403,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c877ef24c6eac6e41aff02fa082f225e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCharacter: {fileID: 0}
+  currentCharacter: {fileID: 812916066}
+  player: {fileID: 1385292854}
 --- !u!1 &1174784526
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,7 +1724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38acda22f2f042b418165b0e6082385b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerHit: 10
 --- !u!4 &1385292855
 Transform:
   m_ObjectHideFlags: 0
@@ -2184,6 +2185,7 @@ GameObject:
   - component: {fileID: 2047515024}
   - component: {fileID: 2047515023}
   - component: {fileID: 2047515022}
+  - component: {fileID: 2047515025}
   m_Layer: 5
   m_Name: Healthbar
   m_TagString: Untagged
@@ -2273,6 +2275,19 @@ Canvas:
   m_SortingLayerID: 852290813
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!114 &2047515025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047515020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee7395d07b2a4442b61c544745943d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 2066931084}
 --- !u!1 &2066931083
 GameObject:
   m_ObjectHideFlags: 0

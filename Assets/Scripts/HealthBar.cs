@@ -9,7 +9,7 @@ public class HealthBar : MonoBehaviour
     public RectTransform health;
     //Width of parent rect to determine normalized value of health bar
     public float rectWidth = 2;
-    public float tweenSpeed = 1;
+    public float tweenSpeed = 0.5f;
 
     private float barPercent = 0;
     public float BarPercent { 
@@ -33,7 +33,7 @@ public class HealthBar : MonoBehaviour
     private void SetHealthBar(float val)
     {
         float healthSize = Utilities.Remap(val, 0, 1, 2, 0);
-        DOTween.To(() => barPercent, x => barPercent = x, healthSize, 1).OnUpdate(()=> {
+        DOTween.To(() => barPercent, x => barPercent = x, healthSize, tweenSpeed).OnUpdate(()=> {
             //Unity inverts their rect transform when setting the offset max #JustUnityThings
             health.offsetMax = new Vector2(-barPercent, 0);
         });

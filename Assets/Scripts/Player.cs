@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float attackDamage { get; private set; }
+    public float attackDamage { get; private set; } = 10;
     
     // Start is called before the first frame update
     void Start()

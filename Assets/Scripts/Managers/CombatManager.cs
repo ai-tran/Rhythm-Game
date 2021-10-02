@@ -25,6 +25,6 @@ public class CombatManager : MonoBehaviour
 
     private void OnAttackHit()
     {
-        currentCharacter.OnHitAttack();
+        currentCharacter.OnHitAttack(player.attackDamage);
     }
 }

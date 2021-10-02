@@ -11,11 +11,11 @@ public class HealthBar : MonoBehaviour
     public float rectWidth = 2;
     public float tweenSpeed = 1;
 
-    private float healthBarVal = 0;
-    public float HealthBarVal { 
+    private float barPercent = 0;
+    public float BarPercent { 
         get
         {
-            return healthBarVal;
+            return barPercent;
         }
         set
         {
@@ -27,16 +27,15 @@ public class HealthBar : MonoBehaviour
     void Start()
     {
         rectWidth = gameObject.GetComponent<RectTransform>().sizeDelta.x;
-        SetHealthBar(1);
     }
 
     /// <param name="val">Normalized value of the health bar</param>
     private void SetHealthBar(float val)
     {
         float healthSize = Utilities.Remap(val, 0, 1, 2, 0);
-        DOTween.To(() => healthBarVal, x => healthBarVal = x, healthSize, 1).OnUpdate(()=> {
+        DOTween.To(() => barPercent, x => barPercent = x, healthSize, 1).OnUpdate(()=> {
             //Unity inverts their rect transform when setting the offset max #JustUnityThings
-            health.offsetMax = new Vector2(-healthBarVal, 0);
+            health.offsetMax = new Vector2(-barPercent, 0);
         });
     }
 

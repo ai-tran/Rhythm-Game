@@ -21,7 +21,6 @@ public class Character : MonoBehaviour
         character.DOPunchPosition(new Vector3(0.5f,0.5f,0.5f), 0.3f, 10, 0.5f);
         currentHeath = currentHeath - damage;
         float percent =  currentHeath / maxHeath;
-        print(percent);
         healthBar.BarPercent = percent;
     }
 }

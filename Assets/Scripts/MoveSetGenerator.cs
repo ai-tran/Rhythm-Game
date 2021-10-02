@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using DG.Tweening;
 
 public class MoveSetGenerator : MonoBehaviour
 {
@@ -37,20 +38,25 @@ public class MoveSetGenerator : MonoBehaviour
         EventManager.OnArrowKeyPress -= ProcessArrowSequence;
     }
 
-    public MoveSetGenerator GenerateMoveSet(int sequenceCount, int arrowCount)
+    public MoveSetGenerator GenerateMoveSet(int sequenceCount, int arrowCount, int arrowIncrement)
     {
+        //destroy current set and clear list and tweens 
         foreach (ArrowSequence child in arrowSequences)
         {
+            DOTween.Kill(child);
             Destroy(child.gameObject);
         }
+
         arrowSequences.Clear();
         sequenceIndex = -1;
 
+        //spawn sequence
         for (int i = 0; i < sequenceCount; i++)
         {
             Vector3 position = new Vector3(0, i * verticalPadding + transform.position.y, 0);
-            var seq = Instantiate(arrowSequencePrefab,position,Quaternion.identity,transform).GetComponent<ArrowSequence>();
-            seq.Init(arrowPrefab, RandomDirectionsList(arrowCount));
+            var seq = Instantiate(arrowSequencePrefab, position, Quaternion.identity, transform).GetComponent<ArrowSequence>();
+            int count = arrowCount + (arrowIncrement * i);
+            seq.Init(arrowPrefab, RandomDirectionsList(count));
             arrowSequences.Add(seq);
         }
 
@@ -78,6 +84,11 @@ public class MoveSetGenerator : MonoBehaviour
         }
         return dir;
     }
+
+    /// <summary>
+    /// Check if user input matches with direction to set arrow pressed
+    /// </summary>
+    /// <param name="direction"></param>
     private void ProcessArrowSequence(Direction direction)
     {
         bool isNoneActive = arrowSequences.All(a => !a.IsActiveMoveSet);

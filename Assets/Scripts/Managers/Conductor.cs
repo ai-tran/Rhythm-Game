@@ -29,6 +29,7 @@ public class Conductor : MonoBehaviour
     public MoveSetGenerator moveSetGenerator;
     public int sequenceCount = 3;
     public int arrowCount = 4;
+    public int arrowIncrement = 1;
 
     private bool isBeatHitForTurn = false;
 
@@ -108,7 +109,7 @@ public class Conductor : MonoBehaviour
             nextBeatTimestamp = beats[beatindex * beatsPerSlide];
             hitBeatTimestamp = beats[beatindex * beatsPerSlide - 1];
 
-            moveSetGenerator.GenerateMoveSet(sequenceCount, arrowCount);
+            moveSetGenerator.GenerateMoveSet(sequenceCount, arrowCount,arrowIncrement);
 
             //check if user missed beat hit once slider is complete
             if (!isBeatHitForTurn)
@@ -145,6 +146,9 @@ public class Conductor : MonoBehaviour
         float hitAccuracyPercent = (songPosition > hitBeatTimestamp) ?
         (songPosition - nextBeatTimestamp) / (hitBeatTimestamp - nextBeatTimestamp) :
         (songPosition - prevBeatTimestamp) / (hitBeatTimestamp - prevBeatTimestamp);
+
+        float distance = Mathf.Abs(hitBeatTimestamp - songPosition);
+        print(distance);
 
         HitAccuracy beatHitAccuracy = GetHitAccuracy(hitAccuracyPercent);
 
@@ -190,15 +194,15 @@ public class Conductor : MonoBehaviour
     }
     private HitAccuracy GetHitAccuracy(float percent)
     {
-        if (percent >= 0.95f)
+        if (percent >= 0.99f)
         {
             return HitAccuracy.Perfect;
         }
-        if (percent >= 0.90f)
+        if (percent >= 0.92f)
         {
             return HitAccuracy.Great;
         }
-        if (percent >= 0.86f)
+        if (percent >= 0.90f)
         {
             return HitAccuracy.Cool;
         }

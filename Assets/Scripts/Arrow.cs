@@ -62,4 +62,9 @@ public class Arrow : MonoBehaviour
                 break;
         }
     }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(transform);
+    }
 }

@@ -15,15 +15,22 @@ public class Conductor : MonoBehaviour
     public Slider beatSlider;
     public Slider hitSlider;
     public AudioSource audioSource;
+    public ScoreManager ScoreManager
+    {
+        get
+        {
+            if (scoreManager == null)
+            {
+                var scoreManager = FindObjectsOfType<ScoreManager>();
+            }
+            return scoreManager;
+        }
+    }
+    public ScoreManager scoreManager;
+
 
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
-
-    public TextMeshProUGUI comboCounter;
-    public TextMeshProUGUI scoreCounter;
-
-    public int comboCount { get; private set; } = 0;
-    public int scoreCount { get; private set; } = 0;
 
     //Move set settings todo move into SO
     public MoveSetGenerator moveSetGenerator;
@@ -79,10 +86,7 @@ public class Conductor : MonoBehaviour
 
     private void Start()
     {
-        //init text 
-        scoreCounter.text = scoreCount.ToString();
-        comboCounter.text = ComboCountText(comboCount);
-        
+
         beatsPerSec = 60f / songBpm;
 
         for(float i = firstBeatOffset; i <= audioSource.clip.length; i += beatsPerSec)
@@ -156,37 +160,19 @@ public class Conductor : MonoBehaviour
         {
             if (isAnySequenceComplete && beatHitAccuracy != HitAccuracy.Miss)
             {
-                SetComboCounter(comboCount + 1);
                 OnCompleteBeatHit.Invoke();
             }
             else
             {
                 beatHitAccuracy = HitAccuracy.Miss;
-                SetComboCounter(0);
             }
 
             SpawnHitIndicator(beatHitAccuracy);
 
             isBeatHitForTurn = true;
         }
+    }
 
-        scoreCount += Score((int)beatHitAccuracy, comboCount, arrowCount);
-        scoreCounter.text = scoreCount.ToString();
-    }
-    private void SetComboCounter(int count)
-    {
-        if (count > comboCount)
-        {
-            comboCounter.rectTransform.DOPunchScale(Vector3.one, 0.2f, 10, 1);
-        }
-        comboCounter.text = ComboCountText(count);
-        comboCount = count;
-    }
-    private string ComboCountText(int count)
-    {
-        string text = "x" + count;
-        return text;
-    }
     private void SpawnHitIndicator(HitAccuracy hitAccuracy)
     {
         HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
@@ -194,11 +180,11 @@ public class Conductor : MonoBehaviour
     }
     private HitAccuracy GetHitAccuracy(float percent)
     {
-        if (percent >= 0.99f)
+        if (percent >= 0.97f)
         {
             return HitAccuracy.Perfect;
         }
-        if (percent >= 0.92f)
+        if (percent >= 0.96f)
         {
             return HitAccuracy.Great;
         }

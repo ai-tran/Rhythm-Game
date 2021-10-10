@@ -26,6 +26,7 @@ public class MoveSetGenerator : MonoBehaviour
             return false;
         }
     }
+
     public int sequenceIndex { get; set; } = -1;
 
     private void OnEnable()

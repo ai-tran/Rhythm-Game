@@ -21,7 +21,8 @@ public class Conductor : MonoBehaviour
         {
             if (scoreManager == null)
             {
-                var scoreManager = FindObjectsOfType<ScoreManager>();
+                var instance = FindObjectOfType<ScoreManager>();
+                scoreManager = instance;
             }
             return scoreManager;
         }
@@ -127,11 +128,6 @@ public class Conductor : MonoBehaviour
         SetSlidersValue(prevBeatTimestamp, nextBeatTimestamp, hitBeatTimestamp, songPosition);
     }
 
-    private int Score(int hitValue, int comboMultiplier, int difficultyMultiplier)
-    {
-        int Score = hitValue + (hitValue * ((comboMultiplier * difficultyMultiplier) / 25));
-        return Score;
-    }
     private void SetSlidersValue(float sliderMin, float sliderMax, float hitValue, float sliderValue)
     {
         beatSlider.minValue = sliderMin;
@@ -152,7 +148,6 @@ public class Conductor : MonoBehaviour
         (songPosition - prevBeatTimestamp) / (hitBeatTimestamp - prevBeatTimestamp);
 
         float distance = Mathf.Abs(hitBeatTimestamp - songPosition);
-        print(distance);
 
         HitAccuracy beatHitAccuracy = GetHitAccuracy(hitAccuracyPercent);
 
@@ -176,6 +171,7 @@ public class Conductor : MonoBehaviour
     private void SpawnHitIndicator(HitAccuracy hitAccuracy)
     {
         HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
+        ScoreManager.UpdateScore(hitAccuracy, 1);
         temp.Init(hitAccuracy);
     }
     private HitAccuracy GetHitAccuracy(float percent)

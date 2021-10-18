@@ -22,10 +22,10 @@ public class ScoreManager : MonoBehaviour
         //Update combo count
         int comboCount = accuracy != HitAccuracy.Miss ? currentComboCount + 1 : currentComboCount = 0;
         SetComboCounter(comboCount);
+        currentComboCount = comboCount;
 
         //Update score
         scoreCount = CalculateScore((int)accuracy,difficulty,1);
-
     }
 
     public int CalculateScore(int hitValue, int comboMultiplier, int difficultyMultiplier)

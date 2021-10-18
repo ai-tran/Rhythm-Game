@@ -107,4 +107,31 @@ public class MoveSetGenerator : MonoBehaviour
         sequenceIndex++;
     }
 
+    //please redo this can not be final 
+    public int CompletedSequenceCount()
+    {
+        int sequencesCount = 0;
+        //redo this there's probably a smarter way using linq
+        List<ArrowSequence> completedSequences = new List<ArrowSequence>();
+        for(int i = 0; i < arrowSequences.Count; i++)
+        {
+            if (arrowSequences[i].IsSequenceComplete)
+            {
+                completedSequences.Add(arrowSequences[i]);
+            }
+        }
+
+        if (completedSequences.Count != 0)
+        {
+            for (int i = 0; i < completedSequences.Count; i++)
+            {
+                if(completedSequences[i].arrows.Count > sequencesCount)
+                {
+                    sequencesCount = completedSequences[i].arrows.Count;
+                }
+            }
+        }
+        return sequencesCount;
+    }
+
 }

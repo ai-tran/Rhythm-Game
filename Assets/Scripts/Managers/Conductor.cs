@@ -7,14 +7,9 @@ using DG.Tweening;
 
 public class Conductor : MonoBehaviour
 {
-    [Header("Rhythm Tool Plugin")]
-    public RhythmAnalyzer analyzer;
-    public RhythmData rhythmData;
-
     [Header("Assign References")]
-    public Slider beatSlider;
-    public Slider hitSlider;
     public AudioSource audioSource;
+    
     public ScoreManager ScoreManager
     {
         get
@@ -28,7 +23,6 @@ public class Conductor : MonoBehaviour
         }
     }
     public ScoreManager scoreManager;
-
 
     public Transform hitAccuracyPrefab;
     public Transform HitAccuracySpawn;
@@ -44,6 +38,10 @@ public class Conductor : MonoBehaviour
     //The number of seconds for each song beat
     private float beatsPerSec;
     public float songPosition;
+    public float songLength { get; private set; }
+
+    public RadialProgressBar songProgressBar;
+    public BeatSlider slider;
 
     public delegate void CompleteBeatHit();
     public static event CompleteBeatHit OnCompleteBeatHit;
@@ -70,24 +68,35 @@ public class Conductor : MonoBehaviour
     private float hitBeatTimestamp;
     private float prevBeatTimestamp;
     private float nextBeatTimestamp;
-    private int beatindex = 1;
+    private int beatSetIndex = 1;
+    private int beatIndex = 0;
 
     public float beatPercent { get; private set; }
 
     private List<float> beats = new List<float>();
 
+    public delegate void SongBeatAction();
+    public static event SongBeatAction OnSongBeat;
+
     private void OnEnable()
     {
         EventManager.OnBeatHit += OnBeatHit;
+        OnSongBeat += ScaleBeatHitSlider;
     }
     private void OnDisable()
     {
         EventManager.OnBeatHit -= OnBeatHit;
+        OnSongBeat -= ScaleBeatHitSlider;
+    }
+
+    private void Awake()
+    {
+        audioSource.clip = GameManager.Instance.currentSong.song;
+        audioSource.Play();
     }
 
     private void Start()
     {
-
         beatsPerSec = 60f / songBpm;
 
         for(float i = firstBeatOffset; i <= audioSource.clip.length; i += beatsPerSec)
@@ -105,14 +114,17 @@ public class Conductor : MonoBehaviour
     {
         songPosition = audioSource.time;
 
+        float songPercentage = audioSource.time / audioSource.clip.length;
+        songProgressBar.SetRadialProgress(songPercentage);
+
         beatPercent = (songPosition - prevBeatTimestamp) / (nextBeatTimestamp - prevBeatTimestamp);
 
         if (songPosition >= nextBeatTimestamp)
         {
-            beatindex++;
+            beatSetIndex++;
             prevBeatTimestamp = nextBeatTimestamp;
-            nextBeatTimestamp = beats[beatindex * beatsPerSlide];
-            hitBeatTimestamp = beats[beatindex * beatsPerSlide - 1];
+            nextBeatTimestamp = beats[beatSetIndex * beatsPerSlide];
+            hitBeatTimestamp = beats[beatSetIndex * beatsPerSlide - 1];
 
             moveSetGenerator.GenerateMoveSet(sequenceCount, arrowCount,arrowIncrement);
 
@@ -121,35 +133,30 @@ public class Conductor : MonoBehaviour
             {
                 SpawnHitIndicator(HitAccuracy.Miss);
             }
-
             isBeatHitForTurn = false;
         }
 
-        SetSlidersValue(prevBeatTimestamp, nextBeatTimestamp, hitBeatTimestamp, songPosition);
+        slider.SetSlidersValue(prevBeatTimestamp, nextBeatTimestamp, hitBeatTimestamp, songPosition);
+        CheckOnBeat(songPosition);
     }
 
-    private void SetSlidersValue(float sliderMin, float sliderMax, float hitValue, float sliderValue)
+    public void CheckOnBeat(float songPos)
     {
-        beatSlider.minValue = sliderMin;
-        beatSlider.maxValue = sliderMax;
+        float offsetTime = 0.1f;
 
-        hitSlider.minValue = sliderMin;
-        hitSlider.maxValue = sliderMax;
-
-        hitSlider.value = hitValue;
-        beatSlider.value = sliderValue;
+        if (Utilities.InRange(songPos, beats[beatIndex] - offsetTime, beats[beatIndex] + offsetTime))
+        {
+            OnSongBeat();
+            beatIndex++;
+        }
     }
     private void OnBeatHit()
     {
         bool isAnySequenceComplete = moveSetGenerator.IsAnySequenceComplete;
-
-        float hitAccuracyPercent = (songPosition > hitBeatTimestamp) ?
-        (songPosition - nextBeatTimestamp) / (hitBeatTimestamp - nextBeatTimestamp) :
-        (songPosition - prevBeatTimestamp) / (hitBeatTimestamp - prevBeatTimestamp);
+        int sequenceCount = moveSetGenerator.CompletedSequenceCount();
 
         float distance = Mathf.Abs(hitBeatTimestamp - songPosition);
-
-        HitAccuracy beatHitAccuracy = GetHitAccuracy(hitAccuracyPercent);
+        HitAccuracy beatHitAccuracy = GetHitAccuracy(distance);
 
         if (!isBeatHitForTurn)
         {
@@ -163,31 +170,34 @@ public class Conductor : MonoBehaviour
             }
 
             SpawnHitIndicator(beatHitAccuracy);
+            ScoreManager.UpdateScore(beatHitAccuracy, sequenceCount);
 
             isBeatHitForTurn = true;
         }
     }
-
     private void SpawnHitIndicator(HitAccuracy hitAccuracy)
     {
         HitAccuracyIndicator temp = Instantiate(hitAccuracyPrefab).GetComponent<HitAccuracyIndicator>();
-        ScoreManager.UpdateScore(hitAccuracy, 1);
         temp.Init(hitAccuracy);
     }
-    private HitAccuracy GetHitAccuracy(float percent)
+    private HitAccuracy GetHitAccuracy(float distance)
     {
-        if (percent >= 0.97f)
+        if (Utilities.InRange(distance,0,0.05f))
         {
             return HitAccuracy.Perfect;
         }
-        if (percent >= 0.96f)
+        if (Utilities.InRange(distance, 0, 0.07f))
         {
             return HitAccuracy.Great;
         }
-        if (percent >= 0.90f)
+        if (Utilities.InRange(distance, 0, 0.1f))
         {
             return HitAccuracy.Cool;
         }
         return HitAccuracy.Miss;
+    }
+    private void ScaleBeatHitSlider()
+    {
+        slider.hitSliderKnob.DOPunchScale(new Vector3(0.5f,0.5f,0.5f), 0.3f, 3, 1);
     }
 }
